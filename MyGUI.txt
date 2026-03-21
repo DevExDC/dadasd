@@ -1,6 +1,7 @@
 -- ============================================
--- EGGS CATEGORY SCANNER
--- Prints ONLY items in the "eggs" category
+-- EGGS CONTENTS SCANNER
+-- Prints what's INSIDE eggs (Sugar Fest)
+-- Shows rewards, pets, chances, etc.
 -- ============================================
 
 repeat task.wait() until game:IsLoaded()
@@ -12,15 +13,14 @@ repeat task.wait(1) until ReplicatedStorage:FindFirstChild("ClientDB")
 task.wait(3)
 
 print("\n" .. string.rep("=", 60))
-print("EGGS CATEGORY SCANNER")
-print("Category: eggs")
+print("EGGS CONTENTS SCANNER - SUGAR FEST")
 print(string.rep("=", 60))
 
 -- ============================================
--- SCAN KINDDB FOR EGGS CATEGORY ONLY
+-- FIND ALL EGGS AND THEIR CONTENTS
 -- ============================================
 
-local eggsCategory = {}
+local eggsData = {}
 
 pcall(function()
     local db = require(ReplicatedStorage.ClientDB.Inventory.KindDB)
@@ -28,12 +28,11 @@ pcall(function()
     for kind, data in pairs(db) do
         local category = data.category or "unknown"
         
-        -- ONLY items where category == "eggs"
+        -- Only eggs category
         if category == "eggs" then
-            table.insert(eggsCategory, {
+            table.insert(eggsData, {
                 name = data.name or kind,
                 kind = kind,
-                rarity = data.rarity or "N/A",
                 data = data
             })
         end
@@ -41,46 +40,73 @@ pcall(function()
 end)
 
 -- Sort by name
-table.sort(eggsCategory, function(a, b) return a.name < b.name end)
+table.sort(eggsData, function(a, b) return a.name < b.name end)
 
-print(string.format("\nFound %d items in eggs category!\n", #eggsCategory))
+print(string.format("\nFound %d eggs!\n", #eggsData))
 
 -- ============================================
--- PRINT EACH EGG
+-- PRINT EGGS AND THEIR CONTENTS
 -- ============================================
 
-for i, egg in ipairs(eggsCategory) do
+for i, egg in ipairs(eggsData) do
     print(string.rep("=", 60))
-    print(string.format("[%d] %s", i, egg.name))
+    print(string.format("[%d] %s (kind: %s)", i, egg.name, egg.kind))
     print(string.rep("=", 60))
-    print(string.format("Kind: %s", egg.kind))
-    print(string.format("Rarity: %s", egg.rarity))
-    print(string.format("Category: %s", egg.data.category))
     
-    print("\nALL DATA:")
+    -- Look for contents/rewards fields
+    local foundContents = false
+    
     for key, value in pairs(egg.data) do
-        if type(value) == "table" then
-            print(string.format("  %s: [TABLE]", key))
+        local keyLower = tostring(key):lower()
+        
+        -- Look for reward/content/pet related fields
+        if keyLower:find("reward") or keyLower:find("content") or 
+           keyLower:find("pet") or keyLower:find("prize") or
+           keyLower:find("drop") or keyLower:find("chance") or
+           keyLower:find("inside") then
             
-            -- Print table contents
-            for k, v in pairs(value) do
-                if type(v) == "table" then
-                    print(string.format("    %s: [TABLE]", k))
-                    
-                    -- Print nested table
-                    for k2, v2 in pairs(v) do
-                        if type(v2) == "table" then
-                            print(string.format("      %s: [TABLE]", k2))
+            foundContents = true
+            print(string.format("\n%s:", key))
+            
+            if type(value) == "table" then
+                -- Print table recursively
+                local function printTable(t, indent)
+                    indent = indent or "  "
+                    for k, v in pairs(t) do
+                        if type(v) == "table" then
+                            print(string.format("%s%s:", indent, tostring(k)))
+                            printTable(v, indent .. "  ")
                         else
-                            print(string.format("      %s = %s", tostring(k2), tostring(v2)))
+                            print(string.format("%s%s = %s", indent, tostring(k), tostring(v)))
                         end
                     end
-                else
-                    print(string.format("    %s = %s", tostring(k), tostring(v)))
                 end
+                printTable(value)
+            else
+                print(string.format("  %s", tostring(value)))
             end
-        else
-            print(string.format("  %s = %s", key, tostring(value)))
+        end
+    end
+    
+    -- If no contents found, print ALL data
+    if not foundContents then
+        print("\n[FULL DATA - No 'contents' field found]")
+        for key, value in pairs(egg.data) do
+            if type(value) == "table" then
+                print(string.format("\n%s:", key))
+                for k, v in pairs(value) do
+                    if type(v) == "table" then
+                        print(string.format("  %s:", k))
+                        for k2, v2 in pairs(v) do
+                            print(string.format("    %s = %s", tostring(k2), tostring(v2)))
+                        end
+                    else
+                        print(string.format("  %s = %s", tostring(k), tostring(v)))
+                    end
+                end
+            else
+                print(string.format("%s = %s", key, tostring(value)))
+            end
         end
     end
     
@@ -88,56 +114,115 @@ for i, egg in ipairs(eggsCategory) do
 end
 
 -- ============================================
--- CHECK YOUR INVENTORY FOR EGGS CATEGORY
+-- SEARCH FOR EGG REWARDS DATABASE
 -- ============================================
 print(string.rep("=", 60))
-print("YOUR INVENTORY - EGGS CATEGORY")
+print("SEARCHING FOR EGG REWARDS DATABASE...")
 print(string.rep("=", 60))
 
-local yourEggs = {}
+-- Try different database locations
+local databases = {
+    "EggRewards",
+    "Eggs",
+    "EggDB",
+    "Rewards",
+    "SugarFest",
+    "SugarFestEggs",
+    "Events"
+}
+
+for _, dbName in ipairs(databases) do
+    pcall(function()
+        local db = require(ReplicatedStorage.ClientDB[dbName])
+        
+        print(string.format("\n[FOUND] ClientDB.%s", dbName))
+        print(string.rep("-", 60))
+        
+        for key, value in pairs(db) do
+            if type(value) == "table" then
+                print(string.format("\n%s:", tostring(key)))
+                for k, v in pairs(value) do
+                    if type(v) == "table" then
+                        print(string.format("  %s:", tostring(k)))
+                        for k2, v2 in pairs(v) do
+                            if type(v2) == "table" then
+                                print(string.format("    %s: [table]", tostring(k2)))
+                            else
+                                print(string.format("    %s = %s", tostring(k2), tostring(v2)))
+                            end
+                        end
+                    else
+                        print(string.format("  %s = %s", tostring(k), tostring(v)))
+                    end
+                end
+            else
+                print(string.format("%s = %s", tostring(key), tostring(value)))
+            end
+        end
+    end)
+end
+
+-- ============================================
+-- SCAN ALL CLIENTDB MODULES
+-- ============================================
+print("\n" .. string.rep("=", 60))
+print("SCANNING ALL CLIENTDB MODULES...")
+print(string.rep("=", 60))
+
+local foundModules = {}
 
 pcall(function()
-    local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
-    local Players = game:GetService("Players")
-    local playerData = Data.get_data()[Players.LocalPlayer.Name]
-    
-    if playerData and playerData.inventory and playerData.inventory.eggs then
-        print("\nYou have eggs in your inventory!")
-        
-        for _, item in pairs(playerData.inventory.eggs) do
-            table.insert(yourEggs, {
-                kind = item.kind,
-                unique = item.unique,
-                properties = item.properties or {}
-            })
-        end
-        
-        print(string.format("Total eggs: %d\n", #yourEggs))
-        
-        for i, egg in ipairs(yourEggs) do
-            print(string.format("[%d] Kind: %s", i, egg.kind))
-            print(string.format("    Unique ID: %s", egg.unique))
-            
-            if next(egg.properties) then
-                print("    Properties:")
-                for key, value in pairs(egg.properties) do
-                    print(string.format("      %s = %s", key, tostring(value)))
+    for _, module in pairs(ReplicatedStorage.ClientDB:GetChildren()) do
+        if module:IsA("ModuleScript") then
+            pcall(function()
+                local data = require(module)
+                
+                if type(data) == "table" then
+                    -- Check for egg/sugar fest related data
+                    for key, value in pairs(data) do
+                        local keyStr = tostring(key):lower()
+                        
+                        if keyStr:find("egg") or keyStr:find("sugar") or keyStr:find("fest") then
+                            if not foundModules[module.Name] then
+                                foundModules[module.Name] = true
+                                print(string.format("\n[%s] contains egg data:", module.Name))
+                            end
+                            
+                            print(string.format("  Key: %s", tostring(key)))
+                            
+                            if type(value) == "table" then
+                                local count = 0
+                                for _ in pairs(value) do count = count + 1 end
+                                print(string.format("  Type: table (%d items)", count))
+                                
+                                -- Print first few items
+                                local printed = 0
+                                for k, v in pairs(value) do
+                                    if printed < 3 then
+                                        print(string.format("    %s = %s", tostring(k), tostring(v)))
+                                        printed = printed + 1
+                                    end
+                                end
+                            else
+                                print(string.format("  Value: %s", tostring(value)))
+                            end
+                        end
+                    end
                 end
-            end
-            print("")
+            end)
         end
-    else
-        print("\nYou don't have any eggs in your inventory.")
     end
 end)
 
 -- ============================================
 -- SUMMARY
 -- ============================================
-print(string.rep("=", 60))
+print("\n" .. string.rep("=", 60))
 print("SCAN COMPLETE!")
 print(string.rep("=", 60))
-print(string.format("Items in 'eggs' category: %d", #eggsCategory))
-print(string.format("Eggs in your inventory: %d", #yourEggs))
-print("\nEggs category prefix: 9_")
+print(string.format("Total eggs found: %d", #eggsData))
+print("\nLook for:")
+print("  - 'rewards' or 'contents' fields")
+print("  - 'pets' tables with percentages")
+print("  - Database modules with egg data")
 print(string.rep("=", 60) .. "\n")
