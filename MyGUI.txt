@@ -1,228 +1,356 @@
 -- ============================================
--- EGGS CONTENTS SCANNER
--- Prints what's INSIDE eggs (Sugar Fest)
--- Shows rewards, pets, chances, etc.
+-- UNIVERSAL TRADER - TRADE ALL ITEMS
+-- Trades ALL of specified items (no amount limit)
+-- Supports: pets, vehicles, toys, food, gifts, eggs
 -- ============================================
 
-repeat task.wait() until game:IsLoaded()
+local CONFIG = getgenv().TradeConfig
 
-local ReplicatedStorage = game:GetService("ReplicatedStorage")
-
--- Wait for game to fully load
-repeat task.wait(1) until ReplicatedStorage:FindFirstChild("ClientDB")
-task.wait(3)
-
-print("\n" .. string.rep("=", 60))
-print("EGGS CONTENTS SCANNER - SUGAR FEST")
-print(string.rep("=", 60))
-
--- ============================================
--- FIND ALL EGGS AND THEIR CONTENTS
--- ============================================
-
-local eggsData = {}
-
-pcall(function()
-    local db = require(ReplicatedStorage.ClientDB.Inventory.KindDB)
-    
-    for kind, data in pairs(db) do
-        local category = data.category or "unknown"
-        
-        -- Only eggs category
-        if category == "eggs" then
-            table.insert(eggsData, {
-                name = data.name or kind,
-                kind = kind,
-                data = data
-            })
-        end
-    end
-end)
-
--- Sort by name
-table.sort(eggsData, function(a, b) return a.name < b.name end)
-
-print(string.format("\nFound %d eggs!\n", #eggsData))
-
--- ============================================
--- PRINT EGGS AND THEIR CONTENTS
--- ============================================
-
-for i, egg in ipairs(eggsData) do
-    print(string.rep("=", 60))
-    print(string.format("[%d] %s (kind: %s)", i, egg.name, egg.kind))
-    print(string.rep("=", 60))
-    
-    -- Look for contents/rewards fields
-    local foundContents = false
-    
-    for key, value in pairs(egg.data) do
-        local keyLower = tostring(key):lower()
-        
-        -- Look for reward/content/pet related fields
-        if keyLower:find("reward") or keyLower:find("content") or 
-           keyLower:find("pet") or keyLower:find("prize") or
-           keyLower:find("drop") or keyLower:find("chance") or
-           keyLower:find("inside") then
-            
-            foundContents = true
-            print(string.format("\n%s:", key))
-            
-            if type(value) == "table" then
-                -- Print table recursively
-                local function printTable(t, indent)
-                    indent = indent or "  "
-                    for k, v in pairs(t) do
-                        if type(v) == "table" then
-                            print(string.format("%s%s:", indent, tostring(k)))
-                            printTable(v, indent .. "  ")
-                        else
-                            print(string.format("%s%s = %s", indent, tostring(k), tostring(v)))
-                        end
-                    end
-                end
-                printTable(value)
-            else
-                print(string.format("  %s", tostring(value)))
-            end
-        end
-    end
-    
-    -- If no contents found, print ALL data
-    if not foundContents then
-        print("\n[FULL DATA - No 'contents' field found]")
-        for key, value in pairs(egg.data) do
-            if type(value) == "table" then
-                print(string.format("\n%s:", key))
-                for k, v in pairs(value) do
-                    if type(v) == "table" then
-                        print(string.format("  %s:", k))
-                        for k2, v2 in pairs(v) do
-                            print(string.format("    %s = %s", tostring(k2), tostring(v2)))
-                        end
-                    else
-                        print(string.format("  %s = %s", tostring(k), tostring(v)))
-                    end
-                end
-            else
-                print(string.format("%s = %s", key, tostring(value)))
-            end
-        end
-    end
-    
-    print("")
+if not CONFIG then
+    error("❌ ERROR: No configuration found!\n\nPlease set getgenv().TradeConfig BEFORE loading the script.")
 end
 
 -- ============================================
--- SEARCH FOR EGG REWARDS DATABASE
+-- SETUP
 -- ============================================
-print(string.rep("=", 60))
-print("SEARCHING FOR EGG REWARDS DATABASE...")
-print(string.rep("=", 60))
 
--- Try different database locations
-local databases = {
-    "EggRewards",
-    "Eggs",
-    "EggDB",
-    "Rewards",
-    "SugarFest",
-    "SugarFestEggs",
-    "Events"
-}
+repeat task.wait() until game:IsLoaded()
+repeat task.wait(1) until game:GetService("ReplicatedStorage"):FindFirstChild("ClientModules")
+task.wait(2)
 
-for _, dbName in ipairs(databases) do
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local playerName = LocalPlayer.Name
+
+-- Anti-AFK
+local VirtualUser = game:GetService("VirtualUser")
+LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
+
+-- Dehash
+for i, v in pairs(debug.getupvalue(require(ReplicatedStorage.ClientModules.Core.RouterClient.RouterClient).init, 7)) do
+    v.Name = i
+end
+
+local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
+
+-- Default settings
+if CONFIG.AUTO_KICK == nil then CONFIG.AUTO_KICK = false end
+if CONFIG.NORMAL_MODE == nil then CONFIG.NORMAL_MODE = false end
+
+-- ============================================
+-- CASE-INSENSITIVE PLAYER FINDER
+-- ============================================
+local function findPlayer(username)
+    local search = username:lower()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Name:lower() == search then
+            return player
+        end
+    end
+    return nil
+end
+
+-- ============================================
+-- ITEM NAME RESOLVER (Any Category)
+-- ============================================
+local function resolveItem(input, category)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    local search = input:lower()
+    local nameMatch = nil
+
+    for _, v in pairs(db) do
+        -- Filter by category if specified
+        if category and v.category and v.category:lower() ~= category:lower() then
+            continue
+        end
+        
+        if v.kind and v.kind:lower() == search then
+            return v.kind, v, "kind"
+        end
+        if not nameMatch and v.name and v.name:lower() == search then
+            nameMatch = v
+        end
+    end
+
+    if nameMatch then
+        return nameMatch.kind, nameMatch, "name"
+    end
+
+    return nil
+end
+
+-- ============================================
+-- GET CATEGORY PREFIX FOR ITEM
+-- ============================================
+local function getCategoryPrefix(itemKind)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    
+    for _, v in pairs(db) do
+        if v.kind == itemKind then
+            local category = v.category or "pets"
+            
+            if category:lower():find("pet") then return "1"
+            elseif category:lower():find("vehicle") or category:lower():find("car") then return "2"
+            elseif category:lower():find("toy") then return "3"
+            elseif category:lower():find("food") then return "4"
+            elseif category:lower():find("gift") then return "5"
+            elseif category:lower() == "eggs" or category:lower():find("egg") then return "9"
+            else return "1" end
+        end
+    end
+    
+    return "1"
+end
+
+-- ============================================
+-- GET ALL ITEMS OF KIND
+-- ============================================
+local function getAllItems(itemKind, category)
+    local items = {}
+    
     pcall(function()
-        local db = require(ReplicatedStorage.ClientDB[dbName])
+        local playerData = Data.get_data()[playerName]
+        if not playerData or not playerData.inventory then return end
         
-        print(string.format("\n[FOUND] ClientDB.%s", dbName))
-        print(string.rep("-", 60))
-        
-        for key, value in pairs(db) do
-            if type(value) == "table" then
-                print(string.format("\n%s:", tostring(key)))
-                for k, v in pairs(value) do
-                    if type(v) == "table" then
-                        print(string.format("  %s:", tostring(k)))
-                        for k2, v2 in pairs(v) do
-                            if type(v2) == "table" then
-                                print(string.format("    %s: [table]", tostring(k2)))
-                            else
-                                print(string.format("    %s = %s", tostring(k2), tostring(v2)))
-                            end
-                        end
-                    else
-                        print(string.format("  %s = %s", tostring(k), tostring(v)))
-                    end
-                end
-            else
-                print(string.format("%s = %s", tostring(key), tostring(value)))
+        -- Determine inventory key
+        local inventoryKey = "pets"
+        if category then
+            local catLower = category:lower()
+            if catLower:find("vehicle") then inventoryKey = "vehicles"
+            elseif catLower:find("toy") then inventoryKey = "toys"
+            elseif catLower:find("food") then inventoryKey = "food"
+            elseif catLower:find("gift") then inventoryKey = "gifts"
+            elseif catLower == "eggs" or catLower:find("egg") then inventoryKey = "eggs"
             end
         end
+        
+        local inventory = playerData.inventory[inventoryKey]
+        if not inventory then return end
+        
+        for _, item in pairs(inventory) do
+            if item.kind == itemKind then
+                table.insert(items, item.unique)
+            end
+        end
+    end)
+    
+    return items
+end
+
+-- ============================================
+-- BUILD ITEMS LIST
+-- ============================================
+local itemsList = {}
+
+if CONFIG.ITEM_NAMES then
+    -- Multiple items
+    for _, itemName in ipairs(CONFIG.ITEM_NAMES) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemName,
+            CATEGORY = CONFIG.CATEGORY,
+        })
+    end
+elseif CONFIG.ITEMS then
+    -- Custom items configuration
+    for _, itemConfig in ipairs(CONFIG.ITEMS) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemConfig.NAME,
+            CATEGORY = itemConfig.CATEGORY,
+        })
+    end
+else
+    -- Single item
+    table.insert(itemsList, {
+        ITEM_NAME = CONFIG.ITEM_NAME or CONFIG.PET_NAME,
+        CATEGORY = CONFIG.CATEGORY,
+    })
+end
+
+-- ============================================
+-- HEADER
+-- ============================================
+print("===========================================")
+print("  🔄 UNIVERSAL TRADER - TRADE ALL")
+print("  Trade everything: pets, eggs, vehicles")
+print("===========================================")
+print("To: " .. CONFIG.USERNAME)
+print("Items:")
+for i, item in ipairs(itemsList) do
+    print(string.format("  %d. %s (category: %s)", i, item.ITEM_NAME, item.CATEGORY or "auto"))
+end
+print("===========================================")
+
+-- ============================================
+-- TRADE FUNCTIONS
+-- ============================================
+
+local function requestTrade(player)
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/RequestTrade"):InvokeServer(player, {})
+        success = true
+    end)
+    return success
+end
+
+local function openTradeGUI()
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/OpenTradingUI"):InvokeServer({})
+        success = true
+    end)
+    return success
+end
+
+local function addItemToTrade(itemUnique, categoryPrefix)
+    local success = false
+    pcall(function()
+        local itemId = categoryPrefix .. "_" .. itemUnique
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AddItemToOffer"):FireServer(itemId)
+        success = true
+    end)
+    return success
+end
+
+local function acceptTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AcceptTradeRequest"):FireServer()
+    end)
+end
+
+local function confirmTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/ConfirmTrade"):FireServer({})
     end)
 end
 
 -- ============================================
--- SCAN ALL CLIENTDB MODULES
+-- MAIN TRADING LOGIC
 -- ============================================
-print("\n" .. string.rep("=", 60))
-print("SCANNING ALL CLIENTDB MODULES...")
-print(string.rep("=", 60))
-
-local foundModules = {}
-
-pcall(function()
-    for _, module in pairs(ReplicatedStorage.ClientDB:GetChildren()) do
-        if module:IsA("ModuleScript") then
-            pcall(function()
-                local data = require(module)
-                
-                if type(data) == "table" then
-                    -- Check for egg/sugar fest related data
-                    for key, value in pairs(data) do
-                        local keyStr = tostring(key):lower()
-                        
-                        if keyStr:find("egg") or keyStr:find("sugar") or keyStr:find("fest") then
-                            if not foundModules[module.Name] then
-                                foundModules[module.Name] = true
-                                print(string.format("\n[%s] contains egg data:", module.Name))
-                            end
-                            
-                            print(string.format("  Key: %s", tostring(key)))
-                            
-                            if type(value) == "table" then
-                                local count = 0
-                                for _ in pairs(value) do count = count + 1 end
-                                print(string.format("  Type: table (%d items)", count))
-                                
-                                -- Print first few items
-                                local printed = 0
-                                for k, v in pairs(value) do
-                                    if printed < 3 then
-                                        print(string.format("    %s = %s", tostring(k), tostring(v)))
-                                        printed = printed + 1
-                                    end
-                                end
-                            else
-                                print(string.format("  Value: %s", tostring(value)))
-                            end
-                        end
+local function tradeAllItems(username, itemName, category)
+    print(string.format("\n🎯 Trading ALL: %s", itemName))
+    
+    -- Resolve item
+    local itemKind, itemData = resolveItem(itemName, category)
+    if not itemKind then
+        print("❌ Could not resolve item: " .. itemName)
+        return false
+    end
+    
+    -- Get category info
+    local actualCategory = itemData.category or category or "pets"
+    local categoryPrefix = getCategoryPrefix(itemKind)
+    
+    print(string.format("📦 Item: %s", itemName))
+    print(string.format("📁 Category: %s (prefix: %s_)", actualCategory, categoryPrefix))
+    
+    -- Get ALL items
+    local allItems = getAllItems(itemKind, actualCategory)
+    local totalItems = #allItems
+    
+    print(string.format("✅ Found %d items to trade", totalItems))
+    
+    if totalItems == 0 then
+        print("⚠️ No items found!")
+        return false
+    end
+    
+    local totalTraded = 0
+    local tradeCount = 0
+    
+    while totalTraded < totalItems do
+        tradeCount = tradeCount + 1
+        print(string.format("\n--- Trade #%d ---", tradeCount))
+        
+        -- Find player
+        local targetPlayer = findPlayer(username)
+        while not targetPlayer do
+            print("⏳ Waiting for player...")
+            task.wait(5)
+            targetPlayer = findPlayer(username)
+        end
+        
+        -- Request trade
+        print("📤 Requesting trade...")
+        while not requestTrade(targetPlayer) do
+            task.wait(1)
+        end
+        task.wait(2)
+        
+        -- Open GUI
+        print("🖥️ Opening trade GUI...")
+        while not openTradeGUI() do
+            task.wait(10)
+        end
+        task.wait(2)
+        
+        -- Add items (max 4 per trade)
+        local neededThisTrade = math.min(4, totalItems - totalTraded)
+        print(string.format("➕ Adding %d items...", neededThisTrade))
+        
+        local addedCount = 0
+        for i = totalTraded + 1, totalTraded + neededThisTrade do
+            if allItems[i] then
+                if addItemToTrade(allItems[i], categoryPrefix) then
+                    addedCount = addedCount + 1
+                    if not CONFIG.NORMAL_MODE then
+                        task.wait(0.2)
+                    else
+                        task.wait(3)
                     end
                 end
-            end)
+            end
         end
+        
+        print(string.format("✅ Added %d items", addedCount))
+        
+        -- Accept & Confirm
+        task.wait(2)
+        print("✅ Accepting trade...")
+        
+        if CONFIG.NORMAL_MODE then
+            acceptTrade()
+            task.wait(20)
+            confirmTrade()
+            task.wait(5)
+        else
+            for i = 1, 20 do
+                acceptTrade()
+                confirmTrade()
+                task.wait(0.1)
+            end
+            task.wait(3)
+        end
+        
+        totalTraded = totalTraded + addedCount
+        print(string.format("📊 Progress: %d/%d", totalTraded, totalItems))
     end
-end)
+    
+    print(string.format("✅ COMPLETE! Traded all %d items", totalTraded))
+    return true
+end
 
 -- ============================================
--- SUMMARY
+-- EXECUTE TRADES
 -- ============================================
-print("\n" .. string.rep("=", 60))
-print("SCAN COMPLETE!")
-print(string.rep("=", 60))
-print(string.format("Total eggs found: %d", #eggsData))
-print("\nLook for:")
-print("  - 'rewards' or 'contents' fields")
-print("  - 'pets' tables with percentages")
-print("  - Database modules with egg data")
-print(string.rep("=", 60) .. "\n")
+
+for _, item in ipairs(itemsList) do
+    tradeAllItems(CONFIG.USERNAME, item.ITEM_NAME, item.CATEGORY)
+    task.wait(2)
+end
+
+-- ============================================
+-- CLEANUP
+-- ============================================
+
+if CONFIG.AUTO_KICK then
+    print("\n🔴 Auto-kick enabled - Kicking in 5s...")
+    task.wait(5)
+    LocalPlayer:Kick("Trading complete!")
+end
+
+print("\n✅ ALL TRADES COMPLETE!")
