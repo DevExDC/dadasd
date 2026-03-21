@@ -1,93 +1,223 @@
--- Server Script (Place in ServerScriptService)
+-- ============================================
+-- CATEGORY SCANNER - FIXED
+-- Prints all categories and their prefixes
+-- ============================================
 
+repeat task.wait() until game:IsLoaded()
+
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local Players = game:GetService("Players")
-local TeleportService = game:GetService("TeleportService")
-local HttpService = game:GetService("HttpService")
-local PLACE_ID = 126884695634066 -- Specific Place ID provided
-local WEBHOOK_URL = "https://discord.com/api/webhooks/1381469624985452685/IjfTscGJdJ2oZXo3xFkc_Ou_Eb2CqEUhjfCnDELAB4C33-q1xcJxTKa7DPswUzR-fPpD" -- Replace with your Discord webhook URL
+local LocalPlayer = Players.LocalPlayer
 
--- Function to send webhook message with retry logic and embed
-local function sendWebhookMessage(playerName, playerId)
-    local maxRetries = 3
-    local retryDelay = 2 -- Seconds between retries
-    local profileUrl = "https://www.roblox.com/users/" .. playerId .. "/profile"
-    local data = {
-        embeds = {{
-            title = "Successfully Kicked A Player, Rejoining now",
-            fields = {
-                { name = "Username", value = playerName, inline = true },
-                { name = "Profile", value = "[View Profile](" .. profileUrl .. ")", inline = true }
-            },
-            color = 3447003, -- Blue color (hex: #3498DB)
-            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ") -- ISO 8601 timestamp
-        }}
-    }
-    local jsonData = HttpService:JSONEncode(data)
+-- Wait for game to fully load
+repeat task.wait(1) until ReplicatedStorage:FindFirstChild("ClientDB")
+repeat task.wait(1) until ReplicatedStorage:FindFirstChild("ClientModules")
+task.wait(3)
 
-    for attempt = 1, maxRetries do
-        local success, errorMessage = pcall(function()
-            HttpService:PostAsync(WEBHOOK_URL, jsonData, Enum.HttpContentType.ApplicationJson)
-        end)
-        if success then
-            print("[KickAndRejoin] Webhook sent for " .. playerName .. " (ID: " .. playerId .. ")")
-            return true
-        else
-            warn("[KickAndRejoin] Webhook attempt " .. attempt .. " failed for " .. playerName .. ": " .. errorMessage)
-            if attempt < maxRetries then
-                task.wait(retryDelay)
+local playerName = LocalPlayer.Name
+
+print("\n" .. string.rep("=", 60))
+print("ADOPT ME CATEGORY SCANNER")
+print(string.rep("=", 60))
+
+-- ============================================
+-- SCAN KINDDB FOR ALL CATEGORIES
+-- ============================================
+print("\n[1] Scanning KindDB...")
+print(string.rep("-", 60))
+
+local categoriesFound = {}
+local categoryItems = {}
+
+local success1 = pcall(function()
+    local db = require(ReplicatedStorage.ClientDB.Inventory.KindDB)
+    
+    for kind, data in pairs(db) do
+        local category = data.category or "unknown"
+        
+        if not categoriesFound[category] then
+            categoriesFound[category] = true
+            categoryItems[category] = {}
+        end
+        
+        table.insert(categoryItems[category], {
+            name = data.name or kind,
+            kind = kind,
+            rarity = data.rarity or "N/A"
+        })
+    end
+end)
+
+if not success1 then
+    print("ERROR: Could not load KindDB")
+else
+    -- Sort and display
+    local sortedCategories = {}
+    for cat in pairs(categoriesFound) do
+        table.insert(sortedCategories, cat)
+    end
+    table.sort(sortedCategories)
+    
+    print("\nCATEGORIES FOUND:")
+    for i, category in ipairs(sortedCategories) do
+        local count = #categoryItems[category]
+        print(string.format("%d. %s (%d items)", i, category, count))
+        
+        -- Show first 3 examples
+        print("   Examples:")
+        for j = 1, math.min(3, count) do
+            local item = categoryItems[category][j]
+            print(string.format("   - %s", item.name))
+        end
+        print("")
+    end
+end
+
+-- ============================================
+-- CHECK YOUR INVENTORY
+-- ============================================
+print(string.rep("-", 60))
+print("[2] Scanning YOUR inventory...")
+print(string.rep("-", 60))
+
+local inventoryCategories = {}
+
+local success2 = pcall(function()
+    local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
+    local playerData = Data.get_data()[playerName]
+    
+    if playerData and playerData.inventory then
+        for invCategory, items in pairs(playerData.inventory) do
+            if type(items) == "table" then
+                inventoryCategories[invCategory] = 0
+                
+                for _, item in pairs(items) do
+                    inventoryCategories[invCategory] = inventoryCategories[invCategory] + 1
+                end
             end
         end
     end
-    warn("[KickAndRejoin] All webhook attempts failed for " .. playerName .. " (ID: " .. playerId .. ")")
-    return false
-end
+end)
 
--- Function to log actions (useful for monitoring multiple accounts)
-local function logAction(message)
-    print("[KickAndRejoin] " .. os.date("%Y-%m-%d %H:%M:%S") .. ": " .. message)
-end
-
--- Function to handle player joining
-local function onPlayerAdded(player)
-    local playerId = player.UserId
-    local playerName = player.Name
-    logAction("Player " .. playerName .. " (ID: " .. playerId .. ") joined. Starting 1-minute timer.")
-
-    -- Start a timer for 1 minute (60 seconds)
-    wait(60)
-
-    -- Check if player is still in the game
-    if player.Parent then
-        logAction("Attempting to rejoin player " .. playerName .. " (ID: " .. playerId .. ") to Place ID: " .. PLACE_ID)
-        local success, errorMessage = pcall(function()
-            TeleportService:Teleport(PLACE_ID, player)
-        end)
-
-        if success then
-            logAction("Successfully teleported player " .. playerName .. " (ID: " .. playerId .. ")")
-            sendWebhookMessage(playerName, playerId)
-        else
-            -- Fallback kick if teleport fails
-            logAction("Teleport failed for " .. playerName .. " (ID: " .. playerId .. "): " .. errorMessage)
-            pcall(function()
-                player:Kick("Don't have your target pet\nRejoin")
-            end)
-            logAction("Kicked player " .. playerName .. " (ID: " .. playerId .. ") with message: Don't have your target pet")
-            sendWebhookMessage(playerName, playerId)
-            -- Wait briefly to ensure kick processes
-            task.wait(1)
-        end
-    else
-        logAction("Player " .. playerName .. " (ID: " .. playerId .. ") left before timer ended")
+if not success2 then
+    print("ERROR: Could not load inventory data")
+else
+    print("\nYOUR INVENTORY CATEGORIES:")
+    local invCount = 0
+    for category, count in pairs(inventoryCategories) do
+        invCount = invCount + 1
+        print(string.format("%d. %s: %d items", invCount, category, count))
     end
 end
 
--- Connect the function to PlayerAdded event
-Players.PlayerAdded:Connect(function(player)
-    coroutine.wrap(onPlayerAdded)(player) -- Run in a coroutine to handle multiple players
+-- ============================================
+-- CATEGORY PREFIX MAPPING
+-- ============================================
+print("\n" .. string.rep("-", 60))
+print("[3] Category prefix analysis...")
+print(string.rep("-", 60))
+
+local categoryMapping = {}
+
+pcall(function()
+    local db = require(ReplicatedStorage.ClientDB.Inventory.KindDB)
+    
+    for kind, data in pairs(db) do
+        local category = data.category or "unknown"
+        
+        -- Determine prefix based on category name
+        local prefix = "unknown"
+        local catLower = category:lower()
+        
+        if catLower:find("pet") then 
+            prefix = "1"
+        elseif catLower:find("vehicle") or catLower:find("car") then 
+            prefix = "2"
+        elseif catLower:find("toy") then 
+            prefix = "3"
+        elseif catLower:find("food") or catLower:find("potion") then 
+            prefix = "4"
+        elseif catLower:find("gift") then 
+            prefix = "5"
+        elseif catLower:find("wear") or catLower:find("cloth") or catLower:find("accessory") then 
+            prefix = "6"
+        elseif catLower:find("furniture") or catLower:find("house") then 
+            prefix = "7"
+        elseif catLower:find("stroller") then 
+            prefix = "8"
+        elseif catLower:find("egg") then
+            prefix = "9"
+        end
+        
+        if not categoryMapping[category] then
+            categoryMapping[category] = {
+                prefix = prefix,
+                count = 0,
+                examples = {}
+            }
+        end
+        
+        categoryMapping[category].count = categoryMapping[category].count + 1
+        
+        if #categoryMapping[category].examples < 3 then
+            table.insert(categoryMapping[category].examples, data.name or kind)
+        end
+    end
 end)
 
--- Handle players already in the game when the script starts
-for _, player in pairs(Players:GetPlayers()) do
-    coroutine.wrap(onPlayerAdded)(player)
+print("\nCATEGORY -> PREFIX MAPPING:")
+local mappingList = {}
+for category, info in pairs(categoryMapping) do
+    table.insert(mappingList, {
+        cat = category, 
+        prefix = info.prefix, 
+        count = info.count,
+        examples = info.examples
+    })
 end
+
+table.sort(mappingList, function(a, b) 
+    if a.prefix == b.prefix then
+        return a.cat < b.cat
+    end
+    return a.prefix < b.prefix 
+end)
+
+for _, mapping in ipairs(mappingList) do
+    print(string.format("\nPrefix %s_ -> %s (%d items)", 
+        mapping.prefix, 
+        mapping.cat, 
+        mapping.count))
+    
+    if #mapping.examples > 0 then
+        print("   Examples: " .. table.concat(mapping.examples, ", "))
+    end
+end
+
+-- ============================================
+-- SUMMARY
+-- ============================================
+print("\n" .. string.rep("=", 60))
+print("SCAN COMPLETE!")
+print(string.rep("=", 60))
+
+local totalCategories = 0
+for _ in pairs(categoriesFound) do
+    totalCategories = totalCategories + 1
+end
+
+print(string.format("Total categories found: %d", totalCategories))
+
+print("\nKNOWN PREFIXES:")
+print("  1_ = pets")
+print("  2_ = vehicles")
+print("  3_ = toys")
+print("  4_ = food/potions")
+print("  5_ = gifts")
+print("  6_ = wearables/accessories")
+print("  7_ = furniture")
+print("  8_ = strollers")
+print("  9_ = eggs")
+
+print("\nCheck the output above for new categories!")
+print(string.rep("=", 60) .. "\n")
