@@ -10,6 +10,9 @@ if not CONFIG then
     error("❌ ERROR: No configuration found!\n\nPlease set getgenv().TradeConfig BEFORE loading the script.")
 end
 
+-- Default FarmSync settings
+if CONFIG.FARMSYNC_AUTO_DISABLE == nil then CONFIG.FARMSYNC_AUTO_DISABLE = false end
+
 -- ============================================
 -- SETUP
 -- ============================================
@@ -22,6 +25,51 @@ local Players = game:GetService("Players")
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
 local LocalPlayer = Players.LocalPlayer
 local playerName = LocalPlayer.Name
+local HttpService = game:GetService("HttpService")
+local request = (syn and syn.request) or (http and http.request) or http_request
+
+-- ============================================
+-- FARMSYNC API DISABLE FUNCTION
+-- ============================================
+local function disable_farmsync_account()
+    if not CONFIG.FARMSYNC_AUTO_DISABLE then 
+        print("ℹ️ FarmSync auto-disable is OFF")
+        return 
+    end
+    
+    if not CONFIG.FARMSYNC_API_KEY or CONFIG.FARMSYNC_API_KEY == "" then
+        print("⚠️ FarmSync API key not set, skipping disable")
+        return
+    end
+    
+    if not request then
+        print("❌ HTTP request function not available")
+        return
+    end
+    
+    print("\n🔴 Disabling FarmSync account...")
+    
+    local success, response = pcall(function()
+        return request({
+            Url = "https://api.farmsync.cloud/api/self/accounts/" .. playerName,
+            Method = "PUT",
+            Headers = {
+                ["Authorization"] = "Bearer " .. CONFIG.FARMSYNC_API_KEY,
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode({
+                enabled = false
+            })
+        })
+    end)
+
+    if success and response and response.StatusCode and response.StatusCode >= 200 and response.StatusCode < 300 then
+        print("✅ FarmSync account disabled successfully! (Status: " .. response.StatusCode .. ")")
+    else
+        local err = response and response.StatusCode or "unknown error"
+        print("❌ Failed to disable FarmSync account: " .. tostring(err))
+    end
+end
 
 -- Anti-AFK
 local VirtualUser = game:GetService("VirtualUser")
@@ -30,10 +78,13 @@ LocalPlayer.Idled:Connect(function()
     VirtualUser:ClickButton2(Vector2.new())
 end)
 
--- Dehash
-for i, v in pairs(debug.getupvalue(require(ReplicatedStorage.ClientModules.Core.RouterClient.RouterClient).init, 7)) do
+-- Dehash remotes
+print("🔧 Dehashing remotes...")
+local RouterClient = require(ReplicatedStorage.ClientModules.Core:WaitForChild("RouterClient"):WaitForChild("RouterClient"))
+for i, v in pairs(debug.getupvalue(RouterClient.init, 7)) do
     v.Name = i
 end
+print("✅ Remotes dehashed!")
 
 local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
 
@@ -347,10 +398,15 @@ end
 -- CLEANUP
 -- ============================================
 
+print("\n✅ ALL TRADES COMPLETE!")
+
+-- Disable FarmSync BEFORE kicking
+disable_farmsync_account()
+
 if CONFIG.AUTO_KICK then
     print("\n🔴 Auto-kick enabled - Kicking in 5s...")
     task.wait(5)
     LocalPlayer:Kick("Trading complete!")
 end
 
-print("\n✅ ALL TRADES COMPLETE!")
+print("\n✅ DONE!")
