@@ -1,0 +1,555 @@
+-- ============================================
+-- UNIVERSAL TRADER - TRADE ALL ITEMS
+-- Trades ALL of specified items (no amount limit)
+-- Supports: pets, vehicles, toys, food, gifts, eggs
+-- ============================================
+
+local CONFIG = getgenv().TradeConfig
+
+if not CONFIG then
+    error("❌ ERROR: No configuration found!\n\nPlease set getgenv().TradeConfig BEFORE loading the script.")
+end
+
+-- Default FarmSync settings
+if CONFIG.FARMSYNC_AUTO_DISABLE == nil then CONFIG.FARMSYNC_AUTO_DISABLE = false end
+if CONFIG.TRADE_ALL == nil then CONFIG.TRADE_ALL = false end
+
+-- Default FarmSync settings
+if CONFIG.FARMSYNC_AUTO_DISABLE == nil then CONFIG.FARMSYNC_AUTO_DISABLE = false end
+
+-- ============================================
+-- SETUP
+-- ============================================
+
+repeat task.wait() until game:IsLoaded()
+repeat task.wait(1) until game:GetService("ReplicatedStorage"):FindFirstChild("ClientModules")
+task.wait(2)
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
+local playerName = LocalPlayer.Name
+local HttpService = game:GetService("HttpService")
+local request = (syn and syn.request) or (http and http.request) or http_request
+
+-- ============================================
+-- FARMSYNC API DISABLE FUNCTION
+-- ============================================
+local function disable_farmsync_account()
+    if not CONFIG.FARMSYNC_AUTO_DISABLE then 
+        print("ℹ️ FarmSync auto-disable is OFF")
+        return 
+    end
+    
+    if not CONFIG.FARMSYNC_API_KEY or CONFIG.FARMSYNC_API_KEY == "" then
+        print("⚠️ FarmSync API key not set, skipping disable")
+        return
+    end
+    
+    if not request then
+        print("❌ HTTP request function not available")
+        return
+    end
+    
+    print("\n🔴 Disabling FarmSync account...")
+    
+    local success, response = pcall(function()
+        return request({
+            Url = "https://api.farmsync.cloud/api/self/accounts/" .. playerName,
+            Method = "PUT",
+            Headers = {
+                ["Authorization"] = "Bearer " .. CONFIG.FARMSYNC_API_KEY,
+                ["Content-Type"] = "application/json"
+            },
+            Body = HttpService:JSONEncode({
+                enabled = false
+            })
+        })
+    end)
+
+    if success and response and response.StatusCode and response.StatusCode >= 200 and response.StatusCode < 300 then
+        print("✅ FarmSync account disabled successfully! (Status: " .. response.StatusCode .. ")")
+    else
+        local err = response and response.StatusCode or "unknown error"
+        print("❌ Failed to disable FarmSync account: " .. tostring(err))
+    end
+end
+
+-- Anti-AFK
+local VirtualUser = game:GetService("VirtualUser")
+LocalPlayer.Idled:Connect(function()
+    VirtualUser:CaptureController()
+    VirtualUser:ClickButton2(Vector2.new())
+end)
+
+-- Dehash remotes
+print("🔧 Dehashing remotes...")
+local RouterClient = require(ReplicatedStorage.ClientModules.Core:WaitForChild("RouterClient"):WaitForChild("RouterClient"))
+for i, v in pairs(debug.getupvalue(RouterClient.init, 7)) do
+    v.Name = i
+end
+print("✅ Remotes dehashed!")
+
+local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
+
+-- Default settings
+if CONFIG.AUTO_KICK == nil then CONFIG.AUTO_KICK = false end
+if CONFIG.NORMAL_MODE == nil then CONFIG.NORMAL_MODE = false end
+
+-- ============================================
+-- CASE-INSENSITIVE PLAYER FINDER
+-- ============================================
+local function findPlayer(username)
+    local search = username:lower()
+    for _, player in pairs(Players:GetPlayers()) do
+        if player.Name:lower() == search then
+            return player
+        end
+    end
+    return nil
+end
+
+-- ============================================
+-- ITEM NAME RESOLVER (Any Category)
+-- ============================================
+local function resolveItem(input, category)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    local search = input:lower()
+    local nameMatch = nil
+
+    for _, v in pairs(db) do
+        -- Filter by category if specified
+        if category and v.category and v.category:lower() ~= category:lower() then
+            continue
+        end
+        
+        if v.kind and v.kind:lower() == search then
+            return v.kind, v, "kind"
+        end
+        if not nameMatch and v.name and v.name:lower() == search then
+            nameMatch = v
+        end
+    end
+
+    if nameMatch then
+        return nameMatch.kind, nameMatch, "name"
+    end
+
+    return nil
+end
+
+-- ============================================
+-- GET CATEGORY PREFIX FOR ITEM
+-- ============================================
+local function getCategoryPrefix(itemKind)
+    local db = require(ReplicatedStorage:WaitForChild("ClientDB"):WaitForChild("Inventory"):WaitForChild("KindDB"))
+    
+    for _, v in pairs(db) do
+        if v.kind == itemKind then
+            local category = v.category or "pets"
+            
+            if category:lower():find("pet") then return "1"
+            elseif category:lower():find("vehicle") or category:lower():find("car") then return "2"
+            elseif category:lower():find("toy") then return "3"
+            elseif category:lower():find("food") then return "4"
+            elseif category:lower():find("gift") then return "5"
+            elseif category:lower() == "eggs" or category:lower():find("egg") then return "9"
+            else return "1" end
+        end
+    end
+    
+    return "1"
+end
+
+-- ============================================
+-- GET ALL ITEMS OF KIND
+-- ============================================
+local function getAllItems(itemKind, category)
+    local items = {}
+    
+    pcall(function()
+        local playerData = Data.get_data()[playerName]
+        if not playerData or not playerData.inventory then return end
+        
+        -- Determine inventory key
+        local inventoryKey = "pets"
+        if category then
+            local catLower = category:lower()
+            if catLower:find("vehicle") then inventoryKey = "vehicles"
+            elseif catLower:find("toy") then inventoryKey = "toys"
+            elseif catLower:find("food") then inventoryKey = "food"
+            elseif catLower:find("gift") then inventoryKey = "gifts"
+            elseif catLower == "eggs" or catLower:find("egg") then inventoryKey = "eggs"
+            end
+        end
+        
+        local inventory = playerData.inventory[inventoryKey]
+        if not inventory then return end
+        
+        for _, item in pairs(inventory) do
+            if item.kind == itemKind then
+                table.insert(items, item.unique)
+            end
+        end
+    end)
+    
+    return items
+end
+
+-- ============================================
+-- GET ALL ITEMS IN ENTIRE INVENTORY (TRADE_ALL MODE)
+-- ============================================
+local function getAllInventoryItems()
+    local allItems = {}
+    
+    pcall(function()
+        local playerData = Data.get_data()[playerName]
+        if not playerData or not playerData.inventory then return end
+        
+        -- Categories to trade
+        local categories = {
+            {key = "pets", prefix = "1"},
+            {key = "vehicles", prefix = "2"},
+            {key = "toys", prefix = "3"},
+            {key = "food", prefix = "4"},
+            {key = "gifts", prefix = "5"},
+            {key = "eggs", prefix = "9"}
+        }
+        
+        for _, cat in ipairs(categories) do
+            local inventory = playerData.inventory[cat.key]
+            
+            if inventory then
+                for _, item in pairs(inventory) do
+                    table.insert(allItems, {
+                        unique = item.unique,
+                        kind = item.kind,
+                        category = cat.key,
+                        prefix = cat.prefix
+                    })
+                end
+            end
+        end
+    end)
+    
+    return allItems
+end
+
+-- ============================================
+-- BUILD ITEMS LIST
+-- ============================================
+local itemsList = {}
+
+if CONFIG.ITEM_NAMES then
+    -- Multiple items
+    for _, itemName in ipairs(CONFIG.ITEM_NAMES) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemName,
+            CATEGORY = CONFIG.CATEGORY,
+        })
+    end
+elseif CONFIG.ITEMS then
+    -- Custom items configuration
+    for _, itemConfig in ipairs(CONFIG.ITEMS) do
+        table.insert(itemsList, {
+            ITEM_NAME = itemConfig.NAME,
+            CATEGORY = itemConfig.CATEGORY,
+        })
+    end
+else
+    -- Single item
+    table.insert(itemsList, {
+        ITEM_NAME = CONFIG.ITEM_NAME or CONFIG.PET_NAME,
+        CATEGORY = CONFIG.CATEGORY,
+    })
+end
+
+-- ============================================
+-- HEADER
+-- ============================================
+print("===========================================")
+print("  🔄 UNIVERSAL TRADER - TRADE ALL")
+print("  Trade everything: pets, eggs, vehicles")
+print("===========================================")
+print("To: " .. CONFIG.USERNAME)
+
+if CONFIG.TRADE_ALL then
+    print("Mode: TRADE ALL INVENTORY")
+    print("⚠️ Will trade EVERYTHING in your inventory!")
+else
+    print("Items:")
+    for i, item in ipairs(itemsList) do
+        print(string.format("  %d. %s (category: %s)", i, item.ITEM_NAME, item.CATEGORY or "auto"))
+    end
+end
+
+print("FarmSync Auto-Disable: " .. (CONFIG.FARMSYNC_AUTO_DISABLE and "ON" or "OFF"))
+print("===========================================")
+
+-- ============================================
+-- TRADE FUNCTIONS
+-- ============================================
+
+local function requestTrade(player)
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/RequestTrade"):InvokeServer(player, {})
+        success = true
+    end)
+    return success
+end
+
+local function openTradeGUI()
+    local success = false
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/OpenTradingUI"):InvokeServer({})
+        success = true
+    end)
+    return success
+end
+
+local function addItemToTrade(itemUnique, categoryPrefix)
+    local success = false
+    pcall(function()
+        local itemId = categoryPrefix .. "_" .. itemUnique
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AddItemToOffer"):FireServer(itemId)
+        success = true
+    end)
+    return success
+end
+
+local function acceptTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AcceptTradeRequest"):FireServer()
+    end)
+end
+
+local function confirmTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/ConfirmTrade"):FireServer({})
+    end)
+end
+
+-- ============================================
+-- MAIN TRADING LOGIC
+-- ============================================
+local function tradeAllItems(username, itemName, category)
+    print(string.format("\n🎯 Trading ALL: %s", itemName))
+    
+    -- Resolve item
+    local itemKind, itemData = resolveItem(itemName, category)
+    if not itemKind then
+        print("❌ Could not resolve item: " .. itemName)
+        return false
+    end
+    
+    -- Get category info
+    local actualCategory = itemData.category or category or "pets"
+    local categoryPrefix = getCategoryPrefix(itemKind)
+    
+    print(string.format("📦 Item: %s", itemName))
+    print(string.format("📁 Category: %s (prefix: %s_)", actualCategory, categoryPrefix))
+    
+    -- Get ALL items
+    local allItems = getAllItems(itemKind, actualCategory)
+    local totalItems = #allItems
+    
+    print(string.format("✅ Found %d items to trade", totalItems))
+    
+    if totalItems == 0 then
+        print("⚠️ No items found!")
+        return false
+    end
+    
+    local totalTraded = 0
+    local tradeCount = 0
+    
+    while totalTraded < totalItems do
+        tradeCount = tradeCount + 1
+        print(string.format("\n--- Trade #%d ---", tradeCount))
+        
+        -- Find player
+        local targetPlayer = findPlayer(username)
+        while not targetPlayer do
+            print("⏳ Waiting for player...")
+            task.wait(5)
+            targetPlayer = findPlayer(username)
+        end
+        
+        -- Request trade
+        print("📤 Requesting trade...")
+        while not requestTrade(targetPlayer) do
+            task.wait(1)
+        end
+        task.wait(2)
+        
+        -- Open GUI
+        print("🖥️ Opening trade GUI...")
+        while not openTradeGUI() do
+            task.wait(10)
+        end
+        task.wait(2)
+        
+        -- Add items (max 4 per trade)
+        local neededThisTrade = math.min(4, totalItems - totalTraded)
+        print(string.format("➕ Adding %d items...", neededThisTrade))
+        
+        local addedCount = 0
+        for i = totalTraded + 1, totalTraded + neededThisTrade do
+            if allItems[i] then
+                if addItemToTrade(allItems[i], categoryPrefix) then
+                    addedCount = addedCount + 1
+                    if not CONFIG.NORMAL_MODE then
+                        task.wait(0.2)
+                    else
+                        task.wait(3)
+                    end
+                end
+            end
+        end
+        
+        print(string.format("✅ Added %d items", addedCount))
+        
+        -- Accept & Confirm
+        task.wait(2)
+        print("✅ Accepting trade...")
+        
+        if CONFIG.NORMAL_MODE then
+            acceptTrade()
+            task.wait(20)
+            confirmTrade()
+            task.wait(5)
+        else
+            for i = 1, 20 do
+                acceptTrade()
+                confirmTrade()
+                task.wait(0.1)
+            end
+            task.wait(3)
+        end
+        
+        totalTraded = totalTraded + addedCount
+        print(string.format("📊 Progress: %d/%d", totalTraded, totalItems))
+    end
+    
+    print(string.format("✅ COMPLETE! Traded all %d items", totalTraded))
+    return true
+end
+
+-- ============================================
+-- EXECUTE TRADES
+-- ============================================
+
+if CONFIG.TRADE_ALL then
+    -- TRADE_ALL MODE: Trade entire inventory
+    print("\n🚨 TRADE_ALL MODE ACTIVATED!")
+    print("Trading ALL items in inventory...")
+    
+    local allInventoryItems = getAllInventoryItems()
+    local totalItems = #allInventoryItems
+    
+    print(string.format("✅ Found %d total items across all categories", totalItems))
+    
+    if totalItems == 0 then
+        print("⚠️ No items found in inventory!")
+    else
+        local totalTraded = 0
+        local tradeCount = 0
+        
+        while totalTraded < totalItems do
+            tradeCount = tradeCount + 1
+            print(string.format("\n--- Trade #%d ---", tradeCount))
+            
+            -- Find player
+            local targetPlayer = findPlayer(CONFIG.USERNAME)
+            while not targetPlayer do
+                print("⏳ Waiting for player...")
+                task.wait(5)
+                targetPlayer = findPlayer(CONFIG.USERNAME)
+            end
+            
+            -- Request trade
+            print("📤 Requesting trade...")
+            while not requestTrade(targetPlayer) do
+                task.wait(1)
+            end
+            task.wait(2)
+            
+            -- Open GUI
+            print("🖥️ Opening trade GUI...")
+            while not openTradeGUI() do
+                task.wait(10)
+            end
+            task.wait(2)
+            
+            -- Add items (max 4 per trade)
+            local neededThisTrade = math.min(4, totalItems - totalTraded)
+            print(string.format("➕ Adding %d items...", neededThisTrade))
+            
+            local addedCount = 0
+            for i = totalTraded + 1, totalTraded + neededThisTrade do
+                if allInventoryItems[i] then
+                    local item = allInventoryItems[i]
+                    if addItemToTrade(item.unique, item.prefix) then
+                        addedCount = addedCount + 1
+                        print(string.format("  Added: %s (%s)", item.kind, item.category))
+                        if not CONFIG.NORMAL_MODE then
+                            task.wait(0.2)
+                        else
+                            task.wait(3)
+                        end
+                    end
+                end
+            end
+            
+            print(string.format("✅ Added %d items", addedCount))
+            
+            -- Accept & Confirm
+            task.wait(2)
+            print("✅ Accepting trade...")
+            
+            if CONFIG.NORMAL_MODE then
+                acceptTrade()
+                task.wait(20)
+                confirmTrade()
+                task.wait(5)
+            else
+                for i = 1, 20 do
+                    acceptTrade()
+                    confirmTrade()
+                    task.wait(0.1)
+                end
+                task.wait(3)
+            end
+            
+            totalTraded = totalTraded + addedCount
+            print(string.format("📊 Progress: %d/%d", totalTraded, totalItems))
+        end
+        
+        print(string.format("\n✅ TRADE_ALL COMPLETE! Traded %d items", totalTraded))
+    end
+    
+else
+    -- NORMAL MODE: Trade specific items
+    for _, item in ipairs(itemsList) do
+        tradeAllItems(CONFIG.USERNAME, item.ITEM_NAME, item.CATEGORY)
+        task.wait(2)
+    end
+end
+
+-- ============================================
+-- CLEANUP
+-- ============================================
+
+print("\n✅ ALL TRADES COMPLETE!")
+
+-- Disable FarmSync BEFORE kicking
+disable_farmsync_account()
+
+if CONFIG.AUTO_KICK then
+    print("\n🔴 Auto-kick enabled - Kicking in 5s...")
+    task.wait(5)
+    LocalPlayer:Kick("Trading complete!")
+end
+
+print("\n✅ DONE!")
