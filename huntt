@@ -1,120 +1,83 @@
--- Create GUI Elements
-local screenGui = Instance.new("ScreenGui")
-local mainFrame = Instance.new("Frame")
-local titleLabel = Instance.new("TextLabel")
-local gemInputBox = Instance.new("TextBox")
-local dupeButton = Instance.new("TextButton")
-local footerLabel = Instance.new("TextLabel")
+-- ============================================
+-- AUTO ACCEPT TRADES
+-- Automatically accepts all incoming trades
+-- ============================================
 
--- Create UICorner for rounded corners
-local uiCornerMain = Instance.new("UICorner")
-local uiCornerButton = Instance.new("UICorner")
-local uiCornerInputBox = Instance.new("UICorner")
-local uiGradient = Instance.new("UIGradient") -- Added for gradient
+if not getgenv().AutoAcceptConfig then
+    getgenv().AutoAcceptConfig = {
+        ENABLED = true,
+        FROM_PLAYER = nil,  -- Set to username to only accept from specific player (e.g., "HolderAccount")
+                            -- Leave as nil to accept from ANYONE
+    }
+end
 
--- Parent the GUI Elements
-screenGui.Name = "GemSpawnerGui"
-screenGui.Parent = game:GetService("CoreGui")
+local CONFIG = getgenv().AutoAcceptConfig
 
-mainFrame.Name = "MainFrame"
-mainFrame.Parent = screenGui
-mainFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255) -- Base color
-mainFrame.Size = UDim2.new(0, 250, 0, 150)
-mainFrame.Position = UDim2.new(0.5, -125, 0.5, -75)
-mainFrame.Active = true
-mainFrame.Draggable = true
+-- ============================================
+-- SETUP
+-- ============================================
 
--- Apply UICorner to MainFrame
-uiCornerMain.CornerRadius = UDim.new(0, 10)
-uiCornerMain.Parent = mainFrame
+repeat task.wait() until game:IsLoaded()
+repeat task.wait(1) until game:GetService("ReplicatedStorage"):FindFirstChild("ClientModules")
+task.wait(2)
 
--- Apply Gradient to MainFrame
-uiGradient.Parent = mainFrame
-uiGradient.Color = ColorSequence.new{
-    ColorSequenceKeypoint.new(0.0, Color3.fromRGB(33, 33, 33)), -- Dark gray
-    ColorSequenceKeypoint.new(1.0, Color3.fromRGB(60, 60, 60))  -- Slightly lighter gray
-}
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local LocalPlayer = Players.LocalPlayer
 
-titleLabel.Name = "TitleLabel"
-titleLabel.Parent = mainFrame
-titleLabel.BackgroundTransparency = 1
-titleLabel.Size = UDim2.new(0, 200, 0, 25)
-titleLabel.Position = UDim2.new(0.5, -100, 0, 5) -- Centered at the top
-titleLabel.Text = "GEMS DUPER💎"
-titleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-titleLabel.TextSize = 16
-titleLabel.Font = Enum.Font.GothamBold
-titleLabel.TextXAlignment = Enum.TextXAlignment.Center
-titleLabel.TextScaled = true  -- Added
+-- Dehash
+print("🔧 Dehashing remotes...")
+local RouterClient = require(ReplicatedStorage.ClientModules.Core:WaitForChild("RouterClient"):WaitForChild("RouterClient"))
+for i, v in pairs(debug.getupvalue(RouterClient.init, 7)) do
+    v.Name = i
+end
+print("✅ Remotes dehashed!")
 
-gemInputBox.Name = "GemInputBox"
-gemInputBox.Parent = mainFrame
-gemInputBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
-gemInputBox.Size = UDim2.new(0, 150, 0, 25)
-gemInputBox.Position = UDim2.new(0, 50, 0, 40)
-gemInputBox.PlaceholderText = "GEM AMOUNT!"
-gemInputBox.Font = Enum.Font.GothamBold
-gemInputBox.TextScaled = true  -- Added
+-- ============================================
+-- HEADER
+-- ============================================
+print("\n" .. ("="):rep(50))
+print("✅ AUTO ACCEPT TRADES - ACTIVE")
+print(("="):rep(50))
 
--- Apply UICorner to TextBox
-uiCornerInputBox.CornerRadius = UDim.new(0, 5)
-uiCornerInputBox.Parent = gemInputBox
+if CONFIG.FROM_PLAYER then
+    print("Mode: Accept trades from " .. CONFIG.FROM_PLAYER .. " only")
+else
+    print("Mode: Accept trades from ANYONE")
+end
 
-dupeButton.Name = "DupeButton"
-dupeButton.Parent = mainFrame
-dupeButton.BackgroundColor3 = Color3.fromRGB(0, 255, 255) -- Light blue for diamond theme
-dupeButton.Size = UDim2.new(0, 200, 0, 25)
-dupeButton.Position = UDim2.new(0, 25, 0, 75)
-dupeButton.Text = "Start Duping Gems"
-dupeButton.Font = Enum.Font.GothamBold
-dupeButton.TextScaled = true  -- Added
+print(("="):rep(50) .. "\n")
 
--- Apply UICorner to Button
-uiCornerButton.CornerRadius = UDim.new(0, 5)
-uiCornerButton.Parent = dupeButton
+-- ============================================
+-- AUTO ACCEPT FUNCTION
+-- ============================================
 
-footerLabel.Name = "FooterLabel"
-footerLabel.Parent = mainFrame
-footerLabel.BackgroundTransparency = 1
-footerLabel.Size = UDim2.new(0, 250, 0, 20)
-footerLabel.Position = UDim2.new(0, 0, 0, 120)
-footerLabel.Text = "Made By NerdyScripts📜"
-footerLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-footerLabel.TextSize = 12
-footerLabel.Font = Enum.Font.GothamBold
-footerLabel.TextXAlignment = Enum.TextXAlignment.Center
-footerLabel.TextScaled = true  -- Added
+local function acceptTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AcceptTradeRequest"):FireServer()
+    end)
+end
 
--- Initialize Variables
-local desiredAmount = nil
+local function confirmTrade()
+    pcall(function()
+        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/ConfirmTrade"):FireServer({})
+    end)
+end
 
--- Function to Handle Button Click
-dupeButton.MouseButton1Click:Connect(function()
-    local inputText = gemInputBox.Text
-    desiredAmount = tonumber(inputText) -- Convert input to number
+-- ============================================
+-- MAIN LOOP
+-- ============================================
 
-    if desiredAmount and desiredAmount > 0 and desiredAmount <= 25000000000 then
-        local library = require(game.ReplicatedStorage.Library.Client.CurrencyCmds)
-        local originalGetFunction = library.Get
-        local poop = originalGetFunction("Diamonds")
-        local increment = desiredAmount / 15
-        local delayTime = 0.1
-
-        library.Get = function(currencyId)
-            if currencyId == "Diamonds" then
-                return poop
-            else
-                return originalGetFunction(currencyId)
-            end
-        end
-
-        while poop < desiredAmount do
-            poop = poop + increment
-            print(library.Get("Diamonds"))
-            wait(delayTime)
-        end
-    else
-        local message = require(game.ReplicatedStorage.Library.Client.Message)
-        message.Error("Hey you need to enter a number between 0 and 25b!")
+spawn(function()
+    while CONFIG.ENABLED do
+        -- Spam accept and confirm
+        acceptTrade()
+        confirmTrade()
+        
+        task.wait(0.5)
     end
 end)
+
+print("🔄 Auto-accepting trades...")
+print("⚠️ Script will run until you reset/leave")
+print("\nTo disable, run: getgenv().AutoAcceptConfig.ENABLED = false")
