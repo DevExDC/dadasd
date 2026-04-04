@@ -53,15 +53,29 @@ print(("="):rep(50) .. "\n")
 -- ============================================
 
 local function acceptTrade()
-    pcall(function()
-        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/AcceptTradeRequest"):FireServer()
+    local success = pcall(function()
+        local tradeAPI = ReplicatedStorage:FindFirstChild("API")
+        if tradeAPI then
+            local acceptRequest = tradeAPI:FindFirstChild("TradeAPI/AcceptTradeRequest")
+            if acceptRequest then
+                acceptRequest:FireServer()
+            end
+        end
     end)
+    return success
 end
 
 local function confirmTrade()
-    pcall(function()
-        ReplicatedStorage:WaitForChild("API"):WaitForChild("TradeAPI/ConfirmTrade"):FireServer({})
+    local success = pcall(function()
+        local tradeAPI = ReplicatedStorage:FindFirstChild("API")
+        if tradeAPI then
+            local confirmTrade = tradeAPI:FindFirstChild("TradeAPI/ConfirmTrade")
+            if confirmTrade then
+                confirmTrade:FireServer({})
+            end
+        end
     end)
+    return success
 end
 
 -- ============================================
