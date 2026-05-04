@@ -29,86 +29,91 @@ end
 
 task.wait(2)
 
--- Subscribe to own house
-print("🏠 Subscribing to own house...")
-pcall(function()
-    ReplicatedStorage:WaitForChild("API"):WaitForChild("HousingAPI/SubscribeToHouse"):InvokeServer(LocalPlayer)
-end)
-task.wait(5)
+-- Step 1: Find house ID from HouseExteriors mailbox
+print("🔍 Searching HouseExteriors for: " .. playerName)
+local houseId = nil
 
--- Find plot CFrame
-print("🔍 Finding house plot...")
+local houseExteriors = workspace:FindFirstChild("HouseExteriors")
+if houseExteriors then
+    for _, house in pairs(houseExteriors:GetChildren()) do
+        pcall(function()
+            local label = house:FindFirstChild("Micro.Mailbox.Top", true)
+                and house:FindFirstChild("Micro.Mailbox.Top", true):FindFirstChild("BillboardGui")
+                and house:FindFirstChild("Micro.Mailbox.Top", true):FindFirstChild("BillboardGui"):FindFirstChild("TextLabel")
+
+            -- Also try direct path
+            if not label then
+                label = house:FindFirstChild("Micro.Mailbox.Top") 
+                    and house["Micro.Mailbox.Top"]:FindFirstChild("BillboardGui")
+                    and house["Micro.Mailbox.Top"].BillboardGui:FindFirstChild("TextLabel")
+            end
+
+            if label and label.Text:lower() == playerName:lower() then
+                houseId = house.Name
+                print("✅ Found house! ID:", houseId, "| Label:", label.Text)
+            end
+        end)
+    end
+else
+    print("❌ HouseExteriors not found in workspace")
+end
+
+if not houseId then
+    error("❌ Could not find house for: " .. playerName)
+end
+
+-- Step 2: Reset character to get inside own house
+print("🔄 Resetting character to enter house...")
+LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health = 0
+task.wait(4)
+
+-- Step 3: Wait until inside HouseInteriors and confirm by player name
+print("⏳ Waiting to load inside house...")
+local insideHouse = false
+local attempts = 0
+
+repeat
+    attempts += 1
+    task.wait(2)
+    local interiors = workspace:FindFirstChild("HouseInteriors")
+    if interiors then
+        local blueprint = interiors:FindFirstChild("blueprint")
+        if blueprint then
+            -- Look for a child named after the player
+            for _, obj in pairs(blueprint:GetDescendants()) do
+                if obj.Name:lower() == playerName:lower() then
+                    insideHouse = true
+                    print("✅ Confirmed inside own house!")
+                    break
+                end
+            end
+        end
+    end
+until insideHouse or attempts >= 10
+
+if not insideHouse then
+    print("⚠️ Could not confirm inside house, trying anyway...")
+end
+
+task.wait(2)
+
+-- Step 4: Get floor CFrame from HouseInteriors
+print("📍 Finding floor CFrame...")
 local plotCFrame = nil
 
--- Method 1: ClientData house ID
 pcall(function()
-    local Data = require(ReplicatedStorage.ClientModules.Core.ClientData)
-    local playerData = Data.get_data()[playerName]
-    local houseId = playerData and playerData.housing and (
-        playerData.housing.subscribed_house_id or
-        playerData.housing.owned_house_id or
-        playerData.housing.house_id
-    )
-    print("🏠 House ID:", houseId)
-
-    if houseId then
-        for _, obj in pairs(workspace:GetDescendants()) do
-            if obj:IsA("Model") or obj:IsA("Folder") then
-                local id = obj:GetAttribute("HouseId") or obj:GetAttribute("house_id")
-                    or obj:GetAttribute("PlotId") or obj:GetAttribute("OwnerId")
-                if tostring(id) == tostring(houseId) then
-                    local base = (obj:IsA("Model") and obj.PrimaryPart)
-                        or obj:FindFirstChild("Base") or obj:FindFirstChild("Floor")
-                        or obj:FindFirstChild("Plot") or obj:FindFirstChildWhichIsA("BasePart")
-                    if base then
-                        plotCFrame = base.CFrame
-                        print("✅ Method 1 found plot:", obj.Name, "| Pos:", tostring(plotCFrame.Position))
-                        break
-                    end
-                end
-            end
+    local interiors = workspace:FindFirstChild("HouseInteriors")
+    local blueprint = interiors and interiors:FindFirstChild("blueprint")
+    if blueprint then
+        local floor = blueprint:FindFirstChild("Floor")
+            or blueprint:FindFirstChild("Base")
+            or blueprint:FindFirstChildWhichIsA("BasePart")
+        if floor then
+            plotCFrame = floor.CFrame
+            print("✅ Floor found:", floor.Name, "| Pos:", tostring(plotCFrame.Position))
         end
     end
 end)
-
--- Method 2: UserId attribute
-if not plotCFrame then
-    local uid = tostring(LocalPlayer.UserId)
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Model") or obj:IsA("Folder") then
-            local owner = obj:GetAttribute("OwnerId") or obj:GetAttribute("owner_id") or obj:GetAttribute("UserId")
-            if tostring(owner) == uid then
-                local base = (obj:IsA("Model") and obj.PrimaryPart)
-                    or obj:FindFirstChild("Base") or obj:FindFirstChild("Floor")
-                    or obj:FindFirstChildWhichIsA("BasePart")
-                if base then
-                    plotCFrame = base.CFrame
-                    print("✅ Method 2 found plot:", obj.Name, "| Pos:", tostring(plotCFrame.Position))
-                    break
-                end
-            end
-        end
-    end
-end
-
--- Method 3: OwnerName attribute
-if not plotCFrame then
-    for _, obj in pairs(workspace:GetDescendants()) do
-        if obj:IsA("Model") or obj:IsA("Folder") then
-            local owner = obj:GetAttribute("OwnerName") or obj:GetAttribute("owner_name") or obj:GetAttribute("PlayerName")
-            if owner and owner:lower() == playerName:lower() then
-                local base = (obj:IsA("Model") and obj.PrimaryPart)
-                    or obj:FindFirstChild("Base") or obj:FindFirstChild("Floor")
-                    or obj:FindFirstChildWhichIsA("BasePart")
-                if base then
-                    plotCFrame = base.CFrame
-                    print("✅ Method 3 found plot:", obj.Name, "| Pos:", tostring(plotCFrame.Position))
-                    break
-                end
-            end
-        end
-    end
-end
 
 -- Fallback: character position
 if not plotCFrame then
@@ -120,10 +125,10 @@ if not plotCFrame then
 end
 
 if not plotCFrame then
-    error("❌ Could not find house plot at all!")
+    error("❌ Could not get floor CFrame!")
 end
 
--- Place mannequin relative to plot
+-- Step 5: Place mannequin
 local offset = CFrame.new(10.099609375, 0, -13.699999809265137)
 local mannequinCFrame = plotCFrame * offset
 
@@ -141,7 +146,19 @@ local success, err = pcall(function()
 end)
 
 if success then
-    print("✅ Mannequin placed successfully!")
+    print("✅ Mannequin placed!")
 else
-    print("❌ Failed to place mannequin:", err)
+    print("❌ Failed:", err)
 end
+
+-- Step 6: Glow nearby parts
+task.wait(1)
+for _, obj in pairs(workspace:GetDescendants()) do
+    if obj:IsA("BasePart") then
+        if (obj.Position - mannequinCFrame.Position).Magnitude < 5 then
+            obj.Material = Enum.Material.Neon
+            obj.BrickColor = BrickColor.new("Bright yellow")
+        end
+    end
+end
+print("✅ Glow applied!")
