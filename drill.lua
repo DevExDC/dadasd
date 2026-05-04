@@ -29,85 +29,57 @@ end
 
 task.wait(2)
 
--- Step 1: Find house ID from HouseExteriors mailbox
-print("🔍 Searching HouseExteriors for: " .. playerName)
-local houseId = nil
-
-local houseExteriors = workspace:FindFirstChild("HouseExteriors")
-if houseExteriors then
-    for _, house in pairs(houseExteriors:GetChildren()) do
-        pcall(function()
-            local label = house:FindFirstChild("Micro.Mailbox.Top", true)
-                and house:FindFirstChild("Micro.Mailbox.Top", true):FindFirstChild("BillboardGui")
-                and house:FindFirstChild("Micro.Mailbox.Top", true):FindFirstChild("BillboardGui"):FindFirstChild("TextLabel")
-
-            -- Also try direct path
-            if not label then
-                label = house:FindFirstChild("Micro.Mailbox.Top") 
-                    and house["Micro.Mailbox.Top"]:FindFirstChild("BillboardGui")
-                    and house["Micro.Mailbox.Top"].BillboardGui:FindFirstChild("TextLabel")
-            end
-
-            if label and label.Text:lower() == playerName:lower() then
-                houseId = house.Name
-                print("✅ Found house! ID:", houseId, "| Label:", label.Text)
-            end
-        end)
-    end
-else
-    print("❌ HouseExteriors not found in workspace")
-end
-
-if not houseId then
-    error("❌ Could not find house for: " .. playerName)
-end
-
--- Step 2: Reset character to get inside own house
+-- Step 1: Reset character to enter own house
 print("🔄 Resetting character to enter house...")
 LocalPlayer.Character:FindFirstChildOfClass("Humanoid").Health = 0
-task.wait(4)
+task.wait(6)
 
--- Step 3: Wait until inside HouseInteriors and confirm by player name
+-- Step 2: Wait until inside HouseInteriors and confirmed by player name
 print("⏳ Waiting to load inside house...")
 local insideHouse = false
 local attempts = 0
+local blueprint = nil
 
 repeat
     attempts += 1
     task.wait(2)
-    local interiors = workspace:FindFirstChild("HouseInteriors")
-    if interiors then
-        local blueprint = interiors:FindFirstChild("blueprint")
-        if blueprint then
-            -- Look for a child named after the player
-            for _, obj in pairs(blueprint:GetDescendants()) do
-                if obj.Name:lower() == playerName:lower() then
+    pcall(function()
+        local interiors = workspace:FindFirstChild("HouseInteriors")
+        if interiors then
+            for _, bp in pairs(interiors:GetChildren()) do
+                if bp:FindFirstChild(playerName) then
                     insideHouse = true
-                    print("✅ Confirmed inside own house!")
-                    break
+                    blueprint = bp
+                    print("✅ Confirmed inside house! Blueprint:", bp.Name)
                 end
             end
         end
-    end
-until insideHouse or attempts >= 10
+    end)
+until insideHouse or attempts >= 15
 
 if not insideHouse then
     print("⚠️ Could not confirm inside house, trying anyway...")
+    pcall(function()
+        blueprint = workspace:FindFirstChild("HouseInteriors"):GetChildren()[1]
+    end)
 end
 
-task.wait(2)
-
--- Step 4: Get floor CFrame from HouseInteriors
+-- Step 3: Get floor CFrame
 print("📍 Finding floor CFrame...")
 local plotCFrame = nil
 
 pcall(function()
-    local interiors = workspace:FindFirstChild("HouseInteriors")
-    local blueprint = interiors and interiors:FindFirstChild("blueprint")
     if blueprint then
+        print("📦 Blueprint contents:")
+        for _, obj in pairs(blueprint:GetChildren()) do
+            print("  -", obj.Name, obj.ClassName)
+        end
+
         local floor = blueprint:FindFirstChild("Floor")
             or blueprint:FindFirstChild("Base")
+            or blueprint:FindFirstChild("Plot")
             or blueprint:FindFirstChildWhichIsA("BasePart")
+
         if floor then
             plotCFrame = floor.CFrame
             print("✅ Floor found:", floor.Name, "| Pos:", tostring(plotCFrame.Position))
@@ -128,7 +100,7 @@ if not plotCFrame then
     error("❌ Could not get floor CFrame!")
 end
 
--- Step 5: Place mannequin
+-- Step 4: Place mannequin
 local offset = CFrame.new(10.099609375, 0, -13.699999809265137)
 local mannequinCFrame = plotCFrame * offset
 
@@ -151,7 +123,7 @@ else
     print("❌ Failed:", err)
 end
 
--- Step 6: Glow nearby parts
+-- Step 5: Glow nearby parts
 task.wait(1)
 for _, obj in pairs(workspace:GetDescendants()) do
     if obj:IsA("BasePart") then
